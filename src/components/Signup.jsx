@@ -9,6 +9,7 @@ function Signup() {
     password: '',
     role: 'jobseeker'
   });
+  
 
   const navigate = useNavigate();
 

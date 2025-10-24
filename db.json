@@ -1,44 +1,58 @@
 {
   "users": [
     {
-      "id": 1760585279784,
+      "id": "1760585279784",
       "name": "Rahul Patle",
       "email": "rahulpatle.dev@gmail.com",
       "password": "123456",
       "role": "jobseeker"
     },
     {
-      "id": 1760588664551,
+      "id": "1760588664551", 
       "name": "Rahul Patle",
       "email": "hr20056@mail.com",
       "password": "123456",
       "role": "hr"
     },
     {
-      "id": 1760589709134,
+      "id": "1760589709134",
       "name": "pranav ",
       "email": "pranav20045@mail.com",
       "password": "rahul23",
       "role": "hr"
     },
     {
-      "id": 1760592919238,
+      "id": "1760592919238",
       "name": "param singh",
       "email": "paramhr.@mail.com",
       "password": "0987654321",
       "role": "hr"
     },
     {
-      "id": 1760594077088,
+      "id": "1760594077088",
       "name": "kiara",
       "email": "kiarahr@gmail.com",
       "password": "12321",
+      "role": "hr"
+    },
+    {
+      "id": 1760623431583,
+      "name": "rajat",
+      "email": "rajat200@gmail.com",
+      "password": "123456",
+      "role": "jobseeker"
+    },
+    {
+      "id": 1760623932617,
+      "name": "kamal",
+      "email": "kamalrana@mail.com",
+      "password": "1234567890",
       "role": "hr"
     }
   ],
   "profiles": [
     {
-      "id": 1760586540367,
+      "id": "1760586540367",
       "headline": "fullstack developer",
       "skills": "react.js, node,js",
       "experience": "2",
@@ -61,7 +75,7 @@
   ],
   "jobs": [
     {
-      "id": 101,
+      "id": "101",
       "hiringRole": "Frontend Developer",
       "jobDesc": "Build responsive UIs using React and Tailwind.",
       "companyName": "TechNova",
@@ -71,7 +85,7 @@
       "postedBy": 1760588664551
     },
     {
-      "id": 102,
+      "id": "102",
       "hiringRole": "Backend Engineer",
       "jobDesc": "Work with Node.js and MongoDB to build scalable APIs.",
       "companyName": "CodeVerse",
@@ -81,7 +95,7 @@
       "postedBy": 1760589709134
     },
     {
-      "id": 1760594513139,
+      "id": "1760594513139",
       "postedBy": null,
       "logo": "",
       "companyName": "",
@@ -99,13 +113,13 @@
   ],
   "applications": [
     {
-      "id": 1,
+      "id": "1",
       "jobId": 101,
       "userId": 1760585279784,
       "appliedAt": "2025-10-16T10:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "jobId": 102,
       "userId": 1760585279784,
       "appliedAt": "2025-10-16T11:00:00Z"

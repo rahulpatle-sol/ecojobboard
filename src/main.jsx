@@ -10,6 +10,7 @@ import DashboardJobseeker from './components/DashboardJobseeker';
 import DashboardHR from './components/DashboardHR';
 
 import ProfileGate from './components/ProfileGate';
+import JobSearch from './components/Jobsearch';
 
 
 
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/DashboardJobseeker/:id" element={<DashboardJobseeker />} />
     <Route path="/DashboardHR" element={<DashboardHR />} />
     <Route path="/create-profile" element={<ProfileGate />} />
+   <Route path="/Jobsearch" element={<JobSearch />} />
   </Routes>
 </BrowserRouter>
 
