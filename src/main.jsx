@@ -11,9 +11,11 @@ import DashboardHR from './components/DashboardHR';
 
 import ProfileGate from './components/ProfileGate';
 import JobSearch from './components/Jobsearch';
-
-
-
+import WelcomeSection from './components/WelcomeSection'
+import Notification from './components/Notification';
+import CandidateAssessment from './components/CandidateAssessment';
+import VarifiedScreen from './components/Verification'
+import VerifiedScreen from './components/Verification';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 <BrowserRouter>
@@ -26,6 +28,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/DashboardHR" element={<DashboardHR />} />
     <Route path="/create-profile" element={<ProfileGate />} />
    <Route path="/Jobsearch" element={<JobSearch />} />
+    <Route path="/WelcomeSection" element={<WelcomeSection />} />
+    <Route path="/Notification" element={<Notification/>}></Route>
+     <Route path="/Assessment" element={<CandidateAssessment/>}></Route> 
+          <Route path="/verification" element={<VerifiedScreen/>}></Route> 
   </Routes>
 </BrowserRouter>
 

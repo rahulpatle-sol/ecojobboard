@@ -8,7 +8,7 @@
       "role": "jobseeker"
     },
     {
-      "id": "1760588664551", 
+      "id": "1760588664551",
       "name": "Rahul Patle",
       "email": "hr20056@mail.com",
       "password": "123456",
@@ -36,14 +36,14 @@
       "role": "hr"
     },
     {
-      "id": 1760623431583,
+      "id": "1760623431583",
       "name": "rajat",
       "email": "rajat200@gmail.com",
       "password": "123456",
       "role": "jobseeker"
     },
     {
-      "id": 1760623932617,
+      "id": "1760623932617",
       "name": "kamal",
       "email": "kamalrana@mail.com",
       "password": "1234567890",
@@ -71,6 +71,65 @@
       "resume": "C:\\fakepath\\rahulpatleresume.pdf",
       "userId": 1760585279784,
       "role": "jobseeker"
+    },
+    {
+      "id": "1761555866823",
+      "headline": "",
+      "skills": "",
+      "experience": "",
+      "education": "",
+      "itSkills": "",
+      "projects": "",
+      "github": "",
+      "linkedin": "",
+      "certification": "",
+      "achievements": "",
+      "languages": "",
+      "careerProfile": "",
+      "jobRole": "",
+      "employmentType": "",
+      "location": "",
+      "resume": "",
+      "companyName": "",
+      "companyLogo": "",
+      "companyDesc": "",
+      "hiringRole": "",
+      "jobDesc": "",
+      "workProfile": "",
+      "fresherAllowed": "",
+      "requiredEducation": "",
+      "category": "",
+      "payoutScale": ""
+    },
+    {
+      "id": "1761556312464",
+      "fullName": "dsef",
+      "jobTitle": "sfdsfdsf",
+      "skills": "sdfgsrsd",
+      "education": "fsdsf",
+      "github": "sdsdf",
+      "linkedin": "dfdsf",
+      "profilePic": ""
+    },
+    {
+      "id": 1761556988528,
+      "profileHeadline": "ui designer",
+      "skills": "figma",
+      "experience": "1 ",
+      "education": "btech in design ",
+      "itSkills": "html css js ",
+      "projects": "login page ui ",
+      "github": "https://github.com",
+      "linkedin": "https://linkdin.com",
+      "certification": "ui coursera",
+      "achievements": "hackthon ",
+      "languages": "hindi  english  ",
+      "careerProfile": "rrr",
+      "jobRole": "web designer ",
+      "employmentType": "full time ",
+      "location": "remote ",
+      "resume": "hhhh",
+      "profilePic": "blob:http://localhost:5173/57eb64b9-e45e-4622-be6d-1389080927fe"
     }
   ],
   "jobs": [
