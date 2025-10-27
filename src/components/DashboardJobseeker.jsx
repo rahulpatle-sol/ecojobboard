@@ -70,7 +70,7 @@ function DashboardJobseeker() {
      
         <a href="/Assessment">   <RiSquareFill /></a>
 
-<a href="/Verification">      <RiVerifiedBadgeFill /></a>
+<a href="/Verified">      <RiVerifiedBadgeFill /></a>
         <a href="/Notification">
         <RiNotification3Fill /> </a>
       </div>

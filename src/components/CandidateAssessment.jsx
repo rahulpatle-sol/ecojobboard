@@ -1,5 +1,5 @@
 import React from 'react';
-import { RiCheckboxCircleFill } from 'react-icons/ri';
+import { RiCheckboxCircleFill ,FaCircleDot } from 'react-icons/ri';
 
 const steps = [
   'Learning - We prefer to learn the stuff',
@@ -25,12 +25,17 @@ export default function CandidateAssessment() {
     <div className="flex h-screen w-screen font-sans bg-gray-100 overflow-hidden">
       {/* Left: Steps List */}
       <div className="w-1/3 bg-white p-6 overflow-y-auto border-r border-gray-300">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Candidate Journey</h2>
-        <ol className="space-y-4 list-decimal list-inside text-gray-700">
+        <h2 className="text-xl font-bold mb-6 text-gray-800">Candidate Journey</h2>
+        <ul className="space-y-4">
           {steps.map((step, i) => (
-            <li key={i} className="text-sm">{step}</li>
+            <li key={i} className="flex items-start gap-3 text-gray-700">
+              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-lg mt-1">
+                <FaCircleDot />
+              </div>
+              <span className="text-sm">{step}</span>
+            </li>
           ))}
-        </ol>
+        </ul>
       </div>
 
       {/* Right: Resources + Status */}

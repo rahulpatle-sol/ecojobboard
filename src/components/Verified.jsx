@@ -1,7 +1,7 @@
-// import { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
 
-export default function VerifiedScreen() {
+export default function Verified() {
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col items-center justify-center font-sans text-center">
       {/* Animated Checkmark */}
@@ -39,7 +39,7 @@ export default function VerifiedScreen() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.2, duration: 0.4 }}
         className="mt-8 px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition"
-        onClick={() => window.location.href = '/dashboard'}
+        onClick={() => window.location.href = '/DashboardJobseeker/:id'}
       >
         Go to Dashboard
       </motion.button>
