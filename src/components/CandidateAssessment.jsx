@@ -1,6 +1,6 @@
 import React from 'react';
-import { RiCheckboxCircleFill ,FaCircleDot } from 'react-icons/ri';
-
+import { RiCheckboxCircleFill } from 'react-icons/ri';
+import { SiBroadcom } from "react-icons/si";
 const steps = [
   'Learning - We prefer to learn the stuff',
   'Aptitude - Test your skill',
@@ -30,7 +30,7 @@ export default function CandidateAssessment() {
           {steps.map((step, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700">
               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-lg mt-1">
-                <FaCircleDot />
+              <SiBroadcom />
               </div>
               <span className="text-sm">{step}</span>
             </li>
