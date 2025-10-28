@@ -16,8 +16,10 @@ import CandidateAssessment from './CandidateAssessment';
 import Verified from './Verified';
 import Apptitude from './Aptitude';
 import ProfileBuilder from './ProfileBuilderHr';
+import PostJob from './PostJob';
 
-
+import MentorDashbaord from './MentorDashboard'
+import HostSession from './HostSession';
 
 export default function AppRoutes() {
   return (
@@ -37,6 +39,9 @@ export default function AppRoutes() {
     <Route path="/Aptitude" element={<Apptitude />} />
 
        <Route path="/ProfileBuilderHr" element={<ProfileBuilder />} />
+       <Route path="/PostJOB" element={<PostJob/>}></Route>
+       <Route path='/MentorDashboard' element={<MentorDashbaord/>}></Route>
+       <Route path='/HostSession' element={<HostSession/>}></Route>
     </Routes>
   );
 }

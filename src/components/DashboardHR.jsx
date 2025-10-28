@@ -17,7 +17,7 @@ function DashboardHR() {
 
  useEffect(() => {
   console.log('HR ID:', id);
-  fetch(`http://localhost:3000/hrProfiles?userId=${id}`)
+  fetch(`http://localhost:3000/hrProfiles`)
     .then(res => res.json())
     .then(data => {
       console.log('HR Profile:', data);

@@ -16,24 +16,29 @@ function Login() {
     e.preventDefault();
     const user = await login(form.email, form.password);
 
-    if (user) {
-      alert('Login successful!');
-      if (user.role === 'jobseeker') {
-        navigate(`/DashboardJobseeker/${user.id}`, {
-          state: { userId: user.id, role: user.role }
-        });
-      } else if (user.role === 'hr') {
-        navigate('/DashboardHR', {
-          state: { userId: user.id, role: user.role }
-        });
-      } else if (!user.role || user.role === 'new') {
-        navigate('/WelcomeSection', {
-          state: { userId: user.id }
-        });
-      }
-    } else {
-      alert('Invalid credentials. Please try again.');
-    }
+   if (user) {
+  alert('Login successful!');
+  if (user.role === 'jobseeker') {
+    navigate(`/DashboardJobseeker/${user.id}`, {
+      state: { userId: user.id, role: user.role }
+    });
+  } else if (user.role === 'hr') {
+    navigate('/DashboardHR', {
+      state: { userId: user.id, role: user.role }
+    });
+  } else if (user.role === 'mentor') {
+    navigate('/MentorDashboard', {
+      state: { userId: user.id, role: user.role }
+    });
+  } else {
+    navigate('/WelcomeSection', {
+      state: { userId: user.id }
+    });
+  }
+} else {
+  alert('Invalid credentials. Please try again.');
+}
+
   };
 
   return (
@@ -96,23 +101,23 @@ function Login() {
       <div className="hidden md:flex w-1/2 bg-purple-600 relative items-center justify-center overflow-hidden">
         {/* Illustration Images */}
         <img
-          src="/illustrations/hire.svg"
+        src='https://cdn.pixabay.com/photo/2018/07/11/14/09/hiring-3531130_640.jpg'
           alt="Hire"
-          className="absolute top-10 left-10 w-20 h-20 object-contain"
+          className="absolute top-10 left-10 w-200 h-50 object-contain"
         />
         <img
-          src="/illustrations/job.svg"
+          src="https://cdn.pixabay.com/photo/2020/07/03/09/01/outsourcing-5365729_960_720.png"
           alt="Job"
-          className="absolute top-40 left-32 w-20 h-20 object-contain"
+          className="absolute top-90 left-32 w-200 h-40 object-contain"
         />
         <img
-          src="/illustrations/office.svg"
+          src="https://cdn.pixabay.com/photo/2023/03/04/06/53/office-7829030_640.jpg"
           alt="Office"
-          className="absolute bottom-20 right-20 w-20 h-20 object-contain"
+          className="absolute bottom-50 right-[-20] w-200 h-60 object-contain"
         />
 
         {/* Slogan */}
-        <p className="absolute bottom-10 right-10 text-white text-lg font-semibold">
+        <p className="absolute bottom-10 right-10 text-white text-5xl top-70 p-4 m-12 font-semibold">
           We build the future
         </p>
       </div>

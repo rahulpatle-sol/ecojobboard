@@ -14,7 +14,7 @@ import FooterSection from './components/Footer'
 const App = () => {
   return (
     <div>
-      <NavBar></NavBar>
+      {/* <NavBar></NavBar> */}
       <Hero></Hero>
       <Roadmap/>
       <IntelligentHiring/>
@@ -24,7 +24,7 @@ const App = () => {
      <PricingSection/>
      <FinalCTASection/>
      <ContactSection/>
-     <FooterSection/>
+     {/* <FooterSection/> */}
 
 
     </div>

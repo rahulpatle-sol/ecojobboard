@@ -25,11 +25,18 @@
       "avatar": "/profilePic/pranav.png"
     },
     {
-      "id": 1761626251323,
+      "id": "1761626251323",
       "name": "soniya",
       "email": "soniya@mail.com",
       "password": "jadu123",
       "role": "hr"
+    },
+    {
+      "id": 1761630711118,
+      "name": "rajat ",
+      "email": "rajat@gmail.com",
+      "password": "123456",
+      "role": "mentor"
     }
   ],
   "jobseekerProfiles": [
@@ -60,7 +67,8 @@
       "jobRole": "Frontend Developer",
       "employmentType": "Full-time",
       "resume": "/resume/rahul.pdf",
-      "profilePic": "/profilePic/rahul.png"
+      "profilePic": "/profilePic/rahul.png",
+      "id": "afd8"
     }
   ],
   "hrProfiles": [
@@ -72,7 +80,8 @@
       "postedJobs": [
         "j1",
         "j2"
-      ]
+      ],
+      "id": "1a38"
     }
   ],
   "mentorProfiles": [
@@ -82,7 +91,8 @@
       "bio": "Helping candidates crack FAANG interviews",
       "linkedin": "https://linkedin.com/in/pranav",
       "sessionsHosted": 12,
-      "rating": 4.8
+      "rating": 4.8,
+      "id": "df41"
     }
   ],
   "jobs": [
@@ -107,6 +117,19 @@
       "employmentType": "Contract",
       "payoutScale": "₹10-15 LPA",
       "postedBy": "u2"
+    },
+    {
+      "id": "j1761630512965",
+      "hiringRole": "AI  RESERCHER ",
+      "companyName": "jadu ai ",
+      "location": "remote ",
+      "employmentType": "full time ",
+      "education": "PHD IN ML",
+      "payoutScale": "200000 C R",
+      "category": "IT ",
+      "website": "https://www.ibm.com/think/topics/artificial-intelligence",
+      "jobDesc": "WE ARE HIRING  ML ENGG ability to  build the ai   in deep  nueral  networks s",
+      "companyLogo": null
     }
   ],
   "applications": [
@@ -121,6 +144,18 @@
       "jobId": "j2",
       "userId": "u1",
       "appliedAt": "2025-10-16T11:00:00Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "s1761632846188",
+      "title": "xsasx",
+      "description": "zxx",
+      "date": "2025-10-09",
+      "time": "11:58",
+      "mode": "Online",
+      "platform": "aasd",
+      "maxParticipants": "345"
     }
   ]
 }

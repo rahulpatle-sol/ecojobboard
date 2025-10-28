@@ -1,11 +1,11 @@
 import React from 'react'
-
+import "@fontsource/zen-dots"; // Defaults to weight 400
 const Hero = () => {
   return (
     <section className="w-full px-6 md:px-12 py-16 bg-white font-['Zen_Dots']">
       {/* Headline */}
       <div className="text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
+        <h1 className="text-4xl md:text-5xl text-indigo-500 leading-tight mb-4">
           Find your dream job now
         </h1>
         <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
