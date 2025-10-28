@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function CreateProfile() {
+const  CreateProfile=()=> {
   const [form, setForm] = useState({
     profileHeadline: '',
     skills: '',
