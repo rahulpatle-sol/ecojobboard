@@ -1,16 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
 import { SiBroadcom } from "react-icons/si";
+
 const steps = [
-  'Learning - We prefer to learn the stuff',
-  'Aptitude - Test your skill',
-  'Discussion with mentor',
-  'Project submission',
-  'Profile Review',
-  'Online Test',
-  'Scorecard',
-  'Recommended Jobs',
-  'Recruitment',
+  { label: 'Learning - We prefer to learn the stuff', path: 'learning' },
+  { label: 'Aptitude - Test your skill', path: 'Aptitude' },
+  { label: 'Discussion with mentor', path: 'mentor-discussion' },
+  { label: 'Project submission', path: 'project-submission' },
+  { label: 'Profile Review', path: 'profile-review' },
+  { label: 'Online Test', path: 'online-test' },
+  { label: 'Scorecard', path: 'scorecard' },
+  { label: 'Recommended Jobs', path: 'recommended-jobs' },
+  { label: 'Recruitment', path: 'recruitment' },
 ];
 
 const resources = [
@@ -21,6 +23,12 @@ const resources = [
 ];
 
 export default function CandidateAssessment() {
+  const navigate = useNavigate();
+
+  const handleStepClick = (path) => {
+    navigate(`/Assessment/${path}`);
+  };
+
   return (
     <div className="flex h-screen w-screen font-sans bg-gray-100 overflow-hidden">
       {/* Left: Steps List */}
@@ -28,11 +36,15 @@ export default function CandidateAssessment() {
         <h2 className="text-xl font-bold mb-6 text-gray-800">Candidate Journey</h2>
         <ul className="space-y-4">
           {steps.map((step, i) => (
-            <li key={i} className="flex items-start gap-3 text-gray-700">
+            <li
+              key={i}
+              onClick={() => handleStepClick(step.path)}
+              className="flex items-start gap-3 text-gray-700 cursor-pointer hover:bg-blue-50 p-2 rounded transition"
+            >
               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-lg mt-1">
-              <SiBroadcom />
+                <SiBroadcom />
               </div>
-              <span className="text-sm">{step}</span>
+              <span className="text-sm">{step.label}</span>
             </li>
           ))}
         </ul>

@@ -1,193 +1,126 @@
 {
   "users": [
     {
-      "id": "1760585279784",
+      "id": "u1",
       "name": "Rahul Patle",
       "email": "rahulpatle.dev@gmail.com",
       "password": "123456",
-      "role": "jobseeker"
+      "role": "jobseeker",
+      "avatar": "/profilePic/rahul.png"
     },
     {
-      "id": "1760588664551",
-      "name": "Rahul Patle",
-      "email": "hr20056@mail.com",
-      "password": "123456",
-      "role": "hr"
-    },
-    {
-      "id": "1760589709134",
-      "name": "pranav ",
-      "email": "pranav20045@mail.com",
-      "password": "rahul23",
-      "role": "hr"
-    },
-    {
-      "id": "1760592919238",
-      "name": "param singh",
-      "email": "paramhr.@mail.com",
-      "password": "0987654321",
-      "role": "hr"
-    },
-    {
-      "id": "1760594077088",
-      "name": "kiara",
+      "id": "u2",
+      "name": "Kiara",
       "email": "kiarahr@gmail.com",
       "password": "12321",
-      "role": "hr"
+      "role": "hr",
+      "avatar": "/profilePic/kiara.png"
     },
     {
-      "id": "1760623431583",
-      "name": "rajat",
-      "email": "rajat200@gmail.com",
-      "password": "123456",
-      "role": "jobseeker"
+      "id": "u3",
+      "name": "Pranav",
+      "email": "pranav20045@mail.com",
+      "password": "rahul23",
+      "role": "mentor",
+      "avatar": "/profilePic/pranav.png"
     },
     {
-      "id": "1760623932617",
-      "name": "kamal",
-      "email": "kamalrana@mail.com",
-      "password": "1234567890",
+      "id": 1761626251323,
+      "name": "soniya",
+      "email": "soniya@mail.com",
+      "password": "jadu123",
       "role": "hr"
     }
   ],
-  "profiles": [
+  "jobseekerProfiles": [
     {
-      "id": "1760586540367",
-      "headline": "fullstack developer",
-      "skills": "react.js, node,js",
-      "experience": "2",
-      "education": "diploma in cse",
-      "itSkills": "blockchain",
-      "projects": "codemapres",
-      "github": "https://github.com/saurabhnative",
-      "linkedin": "https://github.com/saurabhnative",
-      "certification": "google summer of code ",
-      "achievements": "gsoc 2011",
-      "languages": "hindi, english  , marathi",
-      "careerProfile": "software engg",
-      "jobRole": "frontend developer",
-      "employmentType": "fulltime ",
-      "location": "remote",
-      "resume": "C:\\fakepath\\rahulpatleresume.pdf",
-      "userId": 1760585279784,
-      "role": "jobseeker"
-    },
+      "userId": "u1",
+      "fullName": "Rahul Patle",
+      "nickName": "rahul",
+      "gender": "male",
+      "country": "India",
+      "profileHeadline": "Fullstack Developer",
+      "location": "Remote",
+      "email": "rahulpatle.dev@gmail.com",
+      "skills": "React.js, Node.js",
+      "experience": "2 years",
+      "education": "Diploma in CSE",
+      "itSkills": "Blockchain",
+      "projects": "Codemapres",
+      "github": "https://github.com/rahul",
+      "linkedin": "https://linkedin.com/in/rahul",
+      "certification": "Google Summer of Code",
+      "achievements": "GSoC 2011",
+      "languages": [
+        "Hindi",
+        "English",
+        "Marathi"
+      ],
+      "careerProfile": "Software Engineer",
+      "jobRole": "Frontend Developer",
+      "employmentType": "Full-time",
+      "resume": "/resume/rahul.pdf",
+      "profilePic": "/profilePic/rahul.png"
+    }
+  ],
+  "hrProfiles": [
     {
-      "id": "1761555866823",
-      "headline": "",
-      "skills": "",
-      "experience": "",
-      "education": "",
-      "itSkills": "",
-      "projects": "",
-      "github": "",
-      "linkedin": "",
-      "certification": "",
-      "achievements": "",
-      "languages": "",
-      "careerProfile": "",
-      "jobRole": "",
-      "employmentType": "",
-      "location": "",
-      "resume": "",
-      "companyName": "",
-      "companyLogo": "",
-      "companyDesc": "",
-      "hiringRole": "",
-      "jobDesc": "",
-      "workProfile": "",
-      "fresherAllowed": "",
-      "requiredEducation": "",
-      "category": "",
-      "payoutScale": ""
-    },
+      "userId": "u2",
+      "companyName": "TechNova",
+      "companyLogo": "/logos/technova.png",
+      "companyDesc": "Building next-gen web apps",
+      "postedJobs": [
+        "j1",
+        "j2"
+      ]
+    }
+  ],
+  "mentorProfiles": [
     {
-      "id": "1761556312464",
-      "fullName": "dsef",
-      "jobTitle": "sfdsfdsf",
-      "skills": "sdfgsrsd",
-      "education": "fsdsf",
-      "github": "sdsdf",
-      "linkedin": "dfdsf",
-      "profilePic": ""
-    },
-    {
-      "id": 1761556988528,
-      "profileHeadline": "ui designer",
-      "skills": "figma",
-      "experience": "1 ",
-      "education": "btech in design ",
-      "itSkills": "html css js ",
-      "projects": "login page ui ",
-      "github": "https://github.com",
-      "linkedin": "https://linkdin.com",
-      "certification": "ui coursera",
-      "achievements": "hackthon ",
-      "languages": "hindi  english  ",
-      "careerProfile": "rrr",
-      "jobRole": "web designer ",
-      "employmentType": "full time ",
-      "location": "remote ",
-      "resume": "hhhh",
-      "profilePic": "blob:http://localhost:5173/57eb64b9-e45e-4622-be6d-1389080927fe"
+      "userId": "u3",
+      "expertise": "System Design, DSA",
+      "bio": "Helping candidates crack FAANG interviews",
+      "linkedin": "https://linkedin.com/in/pranav",
+      "sessionsHosted": 12,
+      "rating": 4.8
     }
   ],
   "jobs": [
     {
-      "id": "101",
+      "id": "j1",
       "hiringRole": "Frontend Developer",
       "jobDesc": "Build responsive UIs using React and Tailwind.",
       "companyName": "TechNova",
+      "companyLogo": "/logos/technova.png",
       "location": "Remote",
       "employmentType": "Full-time",
       "payoutScale": "₹8-12 LPA",
-      "postedBy": 1760588664551
+      "postedBy": "u2"
     },
     {
-      "id": "102",
+      "id": "j2",
       "hiringRole": "Backend Engineer",
       "jobDesc": "Work with Node.js and MongoDB to build scalable APIs.",
-      "companyName": "CodeVerse",
+      "companyName": "TechNova",
+      "companyLogo": "/logos/technova.png",
       "location": "Bangalore",
       "employmentType": "Contract",
       "payoutScale": "₹10-15 LPA",
-      "postedBy": 1760589709134
-    },
-    {
-      "id": "1760594513139",
-      "postedBy": null,
-      "logo": "",
-      "companyName": "",
-      "companyDesc": "",
-      "hiringRole": "",
-      "location": "",
-      "jobDesc": "",
-      "workProfile": "",
-      "experience": "",
-      "education": "",
-      "category": "",
-      "employmentType": "",
-      "payoutScale": ""
+      "postedBy": "u2"
     }
   ],
   "applications": [
     {
-      "id": "1",
-      "jobId": 101,
-      "userId": 1760585279784,
+      "id": "a1",
+      "jobId": "j1",
+      "userId": "u1",
       "appliedAt": "2025-10-16T10:00:00Z"
     },
     {
-      "id": "2",
-      "jobId": 102,
-      "userId": 1760585279784,
+      "id": "a2",
+      "jobId": "j2",
+      "userId": "u1",
       "appliedAt": "2025-10-16T11:00:00Z"
-    },
-    {
-      "id": "51e1",
-      "jobId": 102,
-      "userId": "1760585279784",
-      "appliedAt": "2025-10-16T05:58:52.543Z"
     }
   ]
 }

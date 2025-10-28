@@ -3,12 +3,11 @@ import { useParams } from 'react-router-dom';
 import {
   RiGridFill,
   RiSquareFill,
-  RiCircleFill,
-  RiTriangleFill,
   RiNotification3Fill,
   RiEdit2Line,
   RiVerifiedBadgeFill
 } from 'react-icons/ri';
+import { FcBusinessman } from "react-icons/fc";
 
 function DashboardJobseeker() {
   const { id } = useParams();
@@ -17,7 +16,8 @@ function DashboardJobseeker() {
   const [loadingJobs, setLoadingJobs] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/profiles?userId=${id}`)
+fetch(`http://localhost:3000/jobseekerProfiles?userId=${id}`)
+
       .then(res => res.json())
       .then(data => {
         if (data.length > 0) setProfile(data[0]);
@@ -62,17 +62,14 @@ function DashboardJobseeker() {
     return <div className="text-center mt-20 text-gray-600">Loading your profile...</div>;
   }
 
-  return (  
+  return (
     <div className="flex h-screen bg-gray-100 font-sans">
       {/* Left Toolbar */}
       <div className="w-16 bg-white shadow-md flex flex-col items-center py-6 space-y-6 text-purple-600 text-xl">
         <RiGridFill />
-     
-        <a href="/Assessment">   <RiSquareFill /></a>
-
-<a href="/Verified">      <RiVerifiedBadgeFill /></a>
-        <a href="/Notification">
-        <RiNotification3Fill /> </a>
+        <a href="/Assessment"><RiSquareFill /></a>
+        <a href="/Verified"><RiVerifiedBadgeFill /></a>
+        <a href="/Notification"><RiNotification3Fill /></a>
       </div>
 
       {/* Main Content */}
@@ -91,13 +88,11 @@ function DashboardJobseeker() {
         <div className="bg-white rounded-xl shadow-md p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome User 👋</h2>
           <div className="flex items-center gap-6 mb-6">
-            <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-300">
+            <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100">
               {profile.profilePic ? (
                 <img src={profile.profilePic} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-xs text-gray-500">
-                  No Image
-                </div>
+                <FcBusinessman className="text-5xl" />
               )}
             </div>
             <div>
@@ -110,30 +105,12 @@ function DashboardJobseeker() {
 
           {/* Editable Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-            <div>
-              <label className="font-medium">Full Name</label>
-              <p>{profile.fullName}</p>
-            </div>
-            <div>
-              <label className="font-medium">Nick Name</label>
-              <p>{profile.nickName || '—'}</p>
-            </div>
-            <div>
-              <label className="font-medium">Gender</label>
-              <p>{profile.gender || '—'}</p>
-            </div>
-            <div>
-              <label className="font-medium">Country</label>
-              <p>{profile.country || 'India'}</p>
-            </div>
-            <div>
-              <label className="font-medium">Your Tagline</label>
-              <p>{profile.profileHeadline}</p>
-            </div>
-            <div>
-              <label className="font-medium">State / Zone</label>
-              <p>{profile.location}</p>
-            </div>
+            <div><label className="font-medium">Full Name</label><p>{profile.fullName}</p></div>
+            <div><label className="font-medium">Nick Name</label><p>{profile.nickName || '—'}</p></div>
+            <div><label className="font-medium">Gender</label><p>{profile.gender || '—'}</p></div>
+            <div><label className="font-medium">Country</label><p>{profile.country || 'India'}</p></div>
+            <div><label className="font-medium">Your Tagline</label><p>{profile.profileHeadline}</p></div>
+            <div><label className="font-medium">State / Zone</label><p>{profile.location}</p></div>
           </div>
 
           {/* Email Section */}
