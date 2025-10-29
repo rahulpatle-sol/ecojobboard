@@ -32,11 +32,19 @@
       "role": "hr"
     },
     {
-      "id": 1761630711118,
+      "id": "1761630711118",
       "name": "rajat ",
       "email": "rajat@gmail.com",
       "password": "123456",
       "role": "mentor"
+    },
+    {
+      "id": 1761720129323,
+      "name": "yukta",
+      "email": "yukta@mail.com",
+      "password": "123456",
+      "role": "jobseeker",
+      "mobile": "768983867678"
     }
   ],
   "jobseekerProfiles": [

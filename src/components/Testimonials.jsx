@@ -1,58 +1,90 @@
-import React from 'react';
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
-const testimonials = [
-  {
-    quote: "This platform changed everything for my startup hiring process.",
-    name: "Michael Chen",
-    title: "CEO, TechNova Solutions",
-  },
-  {
-    quote: "Incredible candidate matching that saved us weeks of recruitment time.",
-    name: "Sarah Rodriguez",
-    title: "HR Director, Quantum Innovations",
-  },
-  {
-    quote: "The most intuitive hiring platform I've ever used.",
-    name: "David Kim",
-    title: "Founder, CreativeEdge Studios",
-  },
-];
+const testimonialData = {
+  candidates: [
+    { quote: "I got hired within 2 weeks. The platform is a game changer.", name: "Ayesha Khan" },
+    { quote: "The job matching was so accurate, I didn’t even need to apply twice.", name: "Ravi Mehta" },
+    { quote: "Cinematic onboarding made me feel valued instantly.", name: "Sneha Roy" },
+  ],
+  recruiters: [
+    { quote: "We sourced top talent in half the time. Brilliant system.", name: "Neha Sharma" },
+    { quote: "Candidate profiles were instantly usable.", name: "James Lee" },
+    { quote: "Role-based routing saved us hours.", name: "Priya Desai" },
+  ],
+  mentors: [
+    { quote: "Mentoring here feels impactful. The flow is frictionless.", name: "Anita Verma" },
+    { quote: "Loved guiding candidates through real-world challenges.", name: "Karan Patel" },
+    { quote: "Finally a platform where mentorship scales.", name: "Arjun Rao" },
+  ],
+}
 
-const TestimonialSection = () => {
+const CategoryCarousel = ({ title, items }) => {
+  const [index, setIndex] = useState(0)
+  const total = items.length
+
+  const next = () => setIndex((i) => (i + 1) % total)
+  const prev = () => setIndex((i) => (i - 1 + total) % total)
+
   return (
-    <section className="bg-white text-gray-800 py-20 px-6 md:px-20">
-      <div className="max-w-7xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">What our users say</h2>
-        <p className="text-lg text-gray-600">
-          Real stories from professionals who transformed their careers.
-        </p>
+    <div className="flex flex-col items-center w-full md:w-1/3 px-4">
+      {/* Category Box */}
+      <div className="border rounded-lg px-6 py-4 mb-6 text-center text-lg font-semibold tracking-wide">
+        {title}
       </div>
 
-      {/* Testimonials */}
-      <div className="grid md:grid-cols-3 gap-8">
-        {testimonials.map((item, index) => (
-          <div key={index} className="bg-gray-50 p-6 rounded-lg shadow-md">
-            {/* Stars */}
-            <div className="flex justify-center mb-4 text-yellow-500">
-              {Array(5).fill().map((_, i) => (
-                <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                  <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
-                </svg>
-              ))}
-            </div>
-            {/* Quote */}
-            <p className="text-gray-700 italic mb-4">“{item.quote}”</p>
-            {/* Name */}
-            <p className="font-semibold text-indigo-600">{item.name}</p>
-            <p className="text-sm text-gray-500">{item.title}</p>
-          </div>
+      {/* Arrows */}
+      <div className="flex items-center justify-center mb-6">
+        <button onClick={prev} className="w-6 h-1mx-2 rotate-180" />
+        <button onClick={next} className="w-6 h-1  mx-2" />
+      </div>
+
+      {/* Dots */}
+      <div className="flex gap-2 mb-8">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-3 h-3 rounded-full ${i === index ? "bg-black" : "bg-grey-400"}`}
+          />
         ))}
       </div>
 
-      {/* CTA Button */}
-    
-    </section>
-  );
-};
+      {/* Animated Card */}
+      <div className="w-full h-40 relative overflow-hidden ">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -100, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute w-full  border rounded-lg p-4text-sm"
+          >
+            <p className="italic mb-2">“{items[index].quote}”</p>
+            <p className="text-xs font-medium ">{items[index].name}</p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
 
-export default TestimonialSection;
+export default function TestimonialMatrix() {
+  return (
+    <section className="w-full min-h-screen bg-amber-50 py-20 px-6">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl font-bold  text-center mb-16">
+          Real Impact Across Roles
+        </h2>
+
+        {/* Category Carousels */}
+        <div className="flex flex-col md:flex-row bg-amber-50 justify-between gap-12">
+          <CategoryCarousel title="Candidates" items={testimonialData.candidates} />
+          <CategoryCarousel title="Recruiters" items={testimonialData.recruiters} />
+          <CategoryCarousel title="Mentors" items={testimonialData.mentors} />
+        </div>
+      </div>
+    </section>
+  )
+}

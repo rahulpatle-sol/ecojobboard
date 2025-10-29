@@ -4,20 +4,23 @@ import { signup } from '../auth/signup';
 import { FcGoogle } from "react-icons/fc";
 import { HiCube } from "react-icons/hi";
 
-function Signup() {
+const Signup=()=> {
   const [form, setForm] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'jobseeker'
+    role: 'jobseeker',
+    mobile:""
   });
 
-  const navigate = useNavigate();
+
+  const navigate = useNavigate();//to navigate one page to  another page 
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+// in handle submit i submitting  my data 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,7 +45,7 @@ function Signup() {
       <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 bg-white">
         <div className="max-w-md mx-auto w-full">
           <HiCube className="text-6xl text-purple-600 mb-4" />
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">Create Account 🚀</h2>
+          <h2 className="text-3xl font-bold mb-6 text-gray-900">Create Account </h2>
 
           {/* Google Signup */}
           <button className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-md mb-4 hover:bg-gray-100 transition">
@@ -57,7 +60,8 @@ function Signup() {
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Your Name"
+              placeholder="Enter Your Name"
+
               required
               className="w-full border border-gray-300 rounded-md px-4 py-2"
             />
@@ -78,6 +82,16 @@ function Signup() {
               placeholder="Create password"
               required
               className="w-full border border-gray-300 rounded-md px-4 py-2"
+            />
+            <input type="tel" 
+            
+            name='mobile'
+            value={form.mobile}
+            onChange={handleChange}
+            placeholder='enter your mobile no'
+            required
+            className=''
+          aria-valuemin={2}
             />
             <select
               name="role"

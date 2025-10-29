@@ -10,12 +10,14 @@ import PricingSection from './components/Pricing'
 import FinalCTASection from './components/FinalCtaSection'
 import ContactSection from './components/ContacSection'
 import FooterSection from './components/Footer'
+import RecruitmentLifecycle from './components/Recruitment'
 
 const App = () => {
   return (
     <div>
       {/* <NavBar></NavBar> */}
       <Hero></Hero>
+      <RecruitmentLifecycle/>
       <Roadmap/>
       <IntelligentHiring/>
       <JobSearchSection/>
