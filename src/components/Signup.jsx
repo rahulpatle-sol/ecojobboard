@@ -42,7 +42,7 @@ const Signup=()=> {
   return (
     <div className="flex h-screen w-screen font-sans">
       {/* Left: Signup Form */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 bg-white">
+      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 bg-amber-50">
         <div className="max-w-md mx-auto w-full">
           <HiCube className="text-6xl text-purple-600 mb-4" />
           <h2 className="text-3xl font-bold mb-6 text-gray-900">Create Account </h2>

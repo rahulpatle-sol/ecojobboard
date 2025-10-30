@@ -1,14 +1,20 @@
 import { motion } from "framer-motion"
+import JobSearchBox from "./Jobsearch"
 
 export default function Hero() {
   return (
-    <section className="w-full md:px-12 py-20 bg-white">
+    <section className="w-full px-4 md:px-12 py-20 bg-gradient-to-b from-amber-50 via-yellow-100 to-beige-200">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left Side - Cards Grid */}
-          <div className="grid grid-cols-2 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="grid grid-cols-2 gap-6 sm:grid-cols-2"
+          >
             {/* Profile Card */}
-            <div className="col-span-1 bg-orange-100 rounded-xl overflow-hidden shadow-sm">
+            <div className="col-span-1 bg-orange-100 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
               <img
                 src="https://media.istockphoto.com/id/1274948583/photo/male-programmer-working-on-new-project.jpg?s=2048x2048&w=is&k=20&c=VppjIAYK1F0WA-tl79S9VC8Hy1OOBaaAFc9OZ6Zw2p0="
                 alt="developer"
@@ -17,7 +23,7 @@ export default function Hero() {
             </div>
 
             {/* Designer Card */}
-            <div className="col-span-1 bg-purple-100 rounded-xl overflow-hidden shadow-sm">
+            <div className="col-span-1 bg-purple-100 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
               <img
                 src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?ixlib=rb-4.1.0&auto=format&fit=crop&q=60&w=500"
                 alt="designer"
@@ -26,7 +32,7 @@ export default function Hero() {
             </div>
 
             {/* Job Details Card */}
-            <div className="col-span-1 bg-black text-white rounded-xl p-4 text-sm shadow-sm">
+            <div className="col-span-1 bg-black text-white rounded-xl p-4 text-sm shadow-xl">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Weekly Hours</span>
@@ -44,7 +50,7 @@ export default function Hero() {
             </div>
 
             {/* Pattern Card */}
-            <div className="col-span-1 bg-orange-100 rounded-xl overflow-hidden shadow-sm">
+            <div className="col-span-1 bg-orange-100 rounded-xl overflow-hidden shadow-xl">
               <div
                 className="w-full h-full"
                 style={{
@@ -56,13 +62,13 @@ export default function Hero() {
             </div>
 
             {/* Open Jobs Card */}
-            <div className="col-span-2 bg-gradient-to-r from-orange-100 to-blue-200 rounded-xl p-6 flex items-center justify-between shadow-sm">
+            <div className="col-span-2 bg-gradient-to-r from-orange-100 to-blue-200 rounded-xl p-6 flex items-center justify-between shadow-xl hover:shadow-2xl transition-shadow duration-300">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow">
-                  <span className="text-2xl"></span>
+                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-2xl">💼</span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800"></p>
+                  <p className="text-sm font-semibold text-gray-800">Open Roles</p>
                 </div>
               </div>
               <div className="text-right">
@@ -73,35 +79,28 @@ export default function Hero() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Side - Content */}
-          <div className="flex flex-col justify-center space-y-8">
-            {/* Animated Input */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              whileFocus={{ scale: 1.02 }}
-              className="relative"
-            >
-              <input
-                type="text"
-                placeholder="Search jobs by skill or role"
-                className="w-full px-4 py-3 rounded-md bg-gray-100 text-gray-800 placeholder-gray-500 shadow focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
-              />
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col justify-center space-y-8"
+          >
+            {/* Search Box */}
+            <motion.div whileFocus={{ scale: 1.02 }} className="relative w-full max-w-md">
+              <JobSearchBox />
             </motion.div>
 
             {/* Headline */}
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-              Land your <br />
-              dream job with <br />
-              industry standard
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+              Land your dream job <br className="hidden sm:block" /> with industry-standard skills
             </h1>
 
             {/* Description */}
-            <p className="text-base text-gray-600 max-w-md leading-relaxed">
-              The biggest pool of remote job offers that match your skillset. Join great teams and build the future together.
+            <p className="text-base text-gray-700 max-w-md leading-relaxed">
+              The largest pool of remote job offers tailored to your skillset. Join great teams and build the future together.
             </p>
 
             {/* Decorative Line */}
@@ -118,7 +117,7 @@ export default function Hero() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <button className="flex items-center gap-2 text-gray-900 hover:text-gray-700 transition">
                 <span className="inline-flex items-center justify-center w-5 h-5">
                   <span className="text-xs">▶</span>
@@ -129,7 +128,7 @@ export default function Hero() {
                 Find a job
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
