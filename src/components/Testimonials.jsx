@@ -1,9 +1,11 @@
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
+// --- Data Structure (kept as is) ---
 const testimonialData = {
   candidates: [
     {
-      quote: "I got hired within 2 weeks. The platform is a game changer.",
+      quote: "I got hired within 2 weeks. The platform is a game changer. The platform is a game changer. The platform is a game changer. The platform is a game changer.",
       name: "Ayesha Khan",
       location: "Mumbai, India",
       image: "https://randomuser.me/api/portraits/women/44.jpg",
@@ -23,7 +25,7 @@ const testimonialData = {
   ],
   recruiters: [
     {
-      quote: "We sourced top talent in half the time. Brilliant system.",
+      quote: "We sourced top talent in half the time. Brilliant system. We sourced top talent in half the time. Brilliant system. We sourced top talent in half the time. Brilliant system.",
       name: "Neha Sharma",
       location: "Pune, India",
       image: "https://randomuser.me/api/portraits/women/12.jpg",
@@ -43,7 +45,7 @@ const testimonialData = {
   ],
   mentors: [
     {
-      quote: "Mentoring here feels impactful. The flow is frictionless.",
+      quote: "Mentoring here feels impactful. The flow is frictionless. Mentoring here feels impactful. The flow is frictionless. Mentoring here feels impactful. The flow is frictionless.",
       name: "Anita Verma",
       location: "Chennai, India",
       image: "https://randomuser.me/api/portraits/women/18.jpg",
@@ -63,62 +65,116 @@ const testimonialData = {
   ],
 }
 
-const CategoryScroller = ({ title, items }) => (
-  <div className="w-full md:w-1/3 px-4">
-    {/* Category Title */}
-    <div className="text-center text-base font-semibold tracking-wide mb-4 border rounded-lg py-2 bg-white shadow-md">
-      {title}
-    </div>
+// Framer Motion variants for the fade-in animation
+const FADE_VARIANTS = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { type: "spring", damping: 12, stiffness: 100 } 
+  },
+};
 
-    {/* Scrollable Container */}
-    <div className="relative overflow-hidden">
-      <motion.div
-        className="flex flex-nowrap gap-6"
-        animate={{ x: ["0%", "-100%"] }}
-        transition={{
-          repeat: Infinity,
-          duration: 30,
-          ease: "linear",
-        }}
-        style={{ width: `${items.length * 240 * 2}px` }}
-      >
-        {[...items, ...items].map((item, index) => (
-          <div
-            key={index}
-            className="w-[220px] bg-white border border-amber-200 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300 flex-shrink-0 p-4 flex flex-col items-center text-center"
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-14 h-14 rounded-full mb-3 object-cover shadow-md"
-            />
-            <p className="italic text-gray-700 text-sm mb-2 leading-snug">“{item.quote}”</p>
-            <p className="font-semibold text-amber-700 text-sm">{item.name}</p>
-            <p className="text-xs text-gray-500">{item.location}</p>
-          </div>
-        ))}
-      </motion.div>
-    </div>
-  </div>
-)
+/**
+ * Component for a single category testimonial carousel that auto-plays.
+ * Replaces the infinite horizontal scroller with a single-card fading view.
+ */
+const TestimonialCarousel = ({ title, items }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Auto-play logic using useEffect and setInterval
+  useEffect(() => {
+    // Set an interval to change the index every 6 seconds
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
+    }, 6000); 
 
+    // Clear the interval when the component unmounts or dependencies change
+    return () => clearInterval(timer);
+  }, [items.length]);
 
-export default function TestimonialMatrix() {
+  const currentItem = items[currentIndex];
+
   return (
-    <section className="w-full min-h-screen bg-gradient-to-b from-amber-50 via-yellow-100 to-beige-200 py-20 px-6">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-16">
-          Real Impact Across Roles
-        </h2>
+    <div className="w-full md:w-1/3 px-2">
+      {/* Category Title */}
+      <div className="text-center text-xl font-extrabold tracking-tight mb-6 text-amber-800">
+        {title}
+      </div>
 
-        <div className="flex flex-col md:flex-row justify-between gap-12">
-          <CategoryScroller title="Telents" items={testimonialData.candidates} />
+      {/* Testimonial Card Container (Fixed Height) */}
+      <div className="relative h-[420px] rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-300">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex} // Key change forces Framer Motion to see a new component and re-run animation
+            variants={FADE_VARIANTS}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="absolute inset-0 p-6 bg-white flex flex-col items-center justify-between text-center"
+          >
+            {/* Quote */}
+            <p className="text-lg italic text-gray-700 mb-6 leading-relaxed flex-grow">
+                “{currentItem.quote}”
+            </p>
+
+            {/* Separator */}
+            <div className="w-16 h-1 bg-amber-400 rounded-full my-4"></div>
+
+            {/* Profile Info */}
+            <div className="flex flex-col items-center mt-auto">
+              <img
+                src={currentItem.image}
+                alt={currentItem.name}
+                // Placeholder image for safety (e.g., if randomuser.me fails)
+                onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/56x56/D1B876/ffffff?text=U" }}
+                className="w-14 h-14 rounded-full mb-3 object-cover shadow-lg border-2 border-amber-500"
+              />
+              <p className="font-bold text-amber-800 text-base">{currentItem.name}</p>
+              <p className="text-sm text-gray-500">{currentItem.location}</p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      
+      {/* Navigation Dots */}
+      <div className="flex justify-center space-x-2 mt-4">
+        {items.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+              index === currentIndex ? 'bg-amber-600 shadow-md' : 'bg-amber-200 hover:bg-amber-300'
+            }`}
+            aria-label={`Go to testimonial ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+export default function App() {
+  return (
+    <section className="w-full min-h-screen bg-gray-50 font-sans py-20 px-4">
+      <script src="https://cdn.tailwindcss.com"></script>
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-5xl font-extrabold text-center mb-4 text-gray-900">
+          Real Impact Across Roles
+        </h1>
+        <p className="text-xl text-center mb-20 text-gray-600 max-w-3xl mx-auto">
+          Hear directly from our community—candidates, recruiters, and mentors—on how our platform is changing the landscape.
+        </p>
+
+        <div className="flex flex-col lg:flex-row justify-between gap-10">
+          <TestimonialCarousel title="Talents" items={testimonialData.candidates} />
          
-          <CategoryScroller title="Mentors" items={testimonialData.mentors} />
-           <CategoryScroller title="Recruiters" items={testimonialData.recruiters} />
+          <TestimonialCarousel title="Mentors" items={testimonialData.mentors} />
+           <TestimonialCarousel title="Recruiters" items={testimonialData.recruiters} />
         </div>
       </div>
     </section>
-  )
+  );
 }

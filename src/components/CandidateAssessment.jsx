@@ -1,86 +1,88 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { RiCheckboxCircleFill } from 'react-icons/ri';
-import { SiBroadcom } from "react-icons/si";
+import React, { useState } from 'react';
+import {
+  ArrowRightCircle,
+  CheckCircle,
+  Clock
+} from 'lucide-react';
+
+// Importing all modular sections
+import Learning from './AssessmentSections/Learning';
+import Aptitude from './AssessmentSections/Aptitude';
+import MentorDiscussion from './AssessmentSections/MentorDiscussion';
+import OnlineTest from './AssessmentSections/OnlineTest';
+import ProfileReview from './AssessmentSections/ProfileReview';
+import Scorecard from './AssessmentSections/ScoreCard';
+import RecommnedateJob from './AssessmentSections/RecommnedateJob';
+
 
 const steps = [
-  { label: 'Learning - We prefer to learn the stuff', path: 'learning' },
-  { label: 'Aptitude - Test your skill', path: 'Aptitude' },
-  { label: 'Discussion with mentor', path: 'mentor-discussion' },
-  { label: 'Project submission', path: 'project-submission' },
-  { label: 'Profile Review', path: 'profile-review' },
-  { label: 'Online Test', path: 'online-test' },
-  { label: 'Scorecard', path: 'scorecard' },
-  { label: 'Recommended Jobs', path: 'recommended-jobs' },
-  { label: 'Recruitment', path: 'recruitment' },
+  { label: 'Learning - We prefer to learn the stuff', path: 'learning', status: 'Completed' },
+  { label: 'Aptitude - Test your skill', path: 'Aptitude', status: 'In Progress' },
+  { label: 'Discussion with mentor', path: 'mentor-discussion', status: 'Pending' },
+  { label: 'Project submission', path: 'project-submission', status: 'Pending' },
+  { label: 'Profile Review', path: 'profile-review', status: 'Pending' },
+  { label: 'Online Test', path: 'online-test', status: 'Pending' },
+  { label: 'Scorecard', path: 'scorecard', status: 'Pending' },
+  { label: 'Recommended Jobs', path: 'recommended-jobs', status: 'Pending' },
+  { label: 'Recruitment', path: 'recruitment', status: 'Pending' },
 ];
 
-const resources = [
-  { label: 'Ref Link 1', status: 'Completed' },
-  { label: 'Ref Link 2', status: 'Pending' },
-  { label: 'Ref Link 3', status: 'In Progress' },
-  { label: 'Ref Link 4', status: 'Completed' },
-];
+// Amber-themed status styles
+const getStepStyles = (status) => {
+  const icon = status === 'Completed' ? CheckCircle : status === 'In Progress' ? Clock : ArrowRightCircle;
+  return { icon, classes: 'bg-amber-100 text-amber-600 border-amber-300' };
+};
 
 export default function CandidateAssessment() {
-  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('learning');
 
-  const handleStepClick = (path) => {
-    navigate(`/Assessment/${path}`);
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'learning': return <Learning />;
+      case 'Aptitude': return <Aptitude />;
+      case 'mentor-discussion': return <MentorDiscussion />;
+      case 'project-submission': return <ProjectSubmission />;
+      case 'profile-review': return <ProfileReview />;
+      case 'online-test': return <OnlineTest />;
+      case 'scorecard': return <Scorecard />;
+      case 'recommended-jobs': return <RecommendedJobs />;
+      case 'recruitment': return <Recruitment />;
+      default: return <Learning />;
+    }
   };
 
   return (
-    <div className="flex h-screen w-screen font-sans bg-gray-100 overflow-hidden">
+    <div className="flex h-screen w-full font-sans bg-gradient-to-br from-amber-50 via-yellow-100 to-beige-200">
       {/* Left: Steps List */}
-      <div className="w-1/3 bg-white p-6 overflow-y-auto border-r border-gray-300">
-        <h2 className="text-xl font-bold mb-6 text-gray-800">Candidate Journey</h2>
-        <ul className="space-y-4">
-          {steps.map((step, i) => (
-            <li
-              key={i}
-              onClick={() => handleStepClick(step.path)}
-              className="flex items-start gap-3 text-gray-700 cursor-pointer hover:bg-blue-50 p-2 rounded transition"
-            >
-              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-lg mt-1">
-                <SiBroadcom />
-              </div>
-              <span className="text-sm">{step.label}</span>
-            </li>
-          ))}
+      <div className="w-full md:w-1/3 bg-white p-6 overflow-y-auto border-r border-slate-200 shadow-xl">
+        <h2 className="text-2xl font-extrabold mb-6 text-slate-800 border-b pb-2">Candidate Journey</h2>
+        <ul className="space-y-3">
+          {steps.map((step, i) => {
+            const { icon: StepIcon, classes } = getStepStyles(step.status);
+            return (
+              <li
+                key={i}
+                onClick={() => setActiveSection(step.path)}
+                className={`flex items-center gap-4 text-slate-700 p-3 rounded-xl cursor-pointer transition-all duration-300 
+                            hover:bg-amber-50 hover:shadow-lg hover:scale-[1.02] border border-transparent hover:border-amber-300 
+                            ${activeSection === step.path ? 'bg-amber-100 border-amber-300' : ''}`}
+              >
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-lg shadow-inner flex-shrink-0 ${classes}`}>
+                  <StepIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-base font-semibold text-slate-800 block">{step.label.split(' - ')[0]}</span>
+                  <span className="text-xs text-slate-500">{step.label.split(' - ')[1]} - <strong className='font-medium'>{step.status}</strong></span>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
-      {/* Right: Resources + Status */}
-      <div className="flex-1 p-6 overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Try Out the Best Resources</h2>
-
-        {/* Resource Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {resources.map((res, i) => (
-            <div key={i} className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-300">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl">
-                <RiCheckboxCircleFill />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-800">{res.label}</h3>
-                <p className="text-sm text-gray-500">Status: {res.status}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Featured Resource */}
-        <div className="mt-10 bg-white p-6 rounded-xl shadow-md border border-gray-300">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Node.js & Express.js for Web Apps and APIs</h3>
-          <img
-            src="/assets/node-express-book.png"
-            alt="Node.js Book"
-            className="w-full h-48 object-cover rounded-md mb-4"
-          />
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-            Get Roadmap
-          </button>
-        </div>
+      {/* Right: Dynamic Section Renderer */}
+      <div className="flex-1 p-6 md:p-8 overflow-y-auto">
+        {renderActiveSection()}
       </div>
     </div>
   );
