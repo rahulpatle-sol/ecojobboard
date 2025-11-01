@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RiSendPlane2Fill, RiSearchLine } from 'react-icons/ri';
+import { motion } from 'framer-motion';
 
 export default function Notification() {
   const [messages, setMessages] = useState([
@@ -17,28 +18,31 @@ export default function Notification() {
   };
 
   return (
-    <div className="h-screen w-screen bg-gray-00 font-sans flex flex-col">
+    <div className="h-screen w-screen bg-gradient-to-br from-amber-50 via-yellow-100 to-beige-200 font-sans flex flex-col">
       {/* Top Bar */}
-      <div className="bg-gray-100 px-6 py-4 text-xl font-semibold">
+      <div className="bg-white px-6 py-4 text-xl font-bold text-gray-800 border-b border-amber-200 shadow-sm">
         Notifications
       </div>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Chat Section */}
         <div className="w-full md:w-2/3 p-6 flex flex-col justify-between">
-          <div className="space-y-4 overflow-y-auto">
+          <div className="space-y-4 overflow-y-auto pr-2">
             {messages.map((msg, i) => (
-              <div
+              <motion.div
                 key={i}
-                className={`max-w-md px-4 py-2 rounded-lg ${
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className={`max-w-md px-4 py-2 rounded-xl shadow-md ${
                   msg.sender === 'you'
-                    ? 'bg-gray-200 self-end text-right'
-                    : 'bg-blue-200 self-start text-left'
+                    ? 'bg-amber-100 self-end text-right'
+                    : 'bg-white self-start text-left border border-amber-200'
                 }`}
               >
-                <p className="text-sm font-medium">{msg.sender}</p>
-                <p>{msg.text}</p>
-              </div>
+                <p className="text-sm font-semibold text-amber-700">{msg.sender}</p>
+                <p className="text-gray-800">{msg.text}</p>
+              </motion.div>
             ))}
           </div>
 
@@ -49,41 +53,48 @@ export default function Notification() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md"
+              className="flex-1 px-4 py-2 border border-amber-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={handleSend}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+              className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition shadow-md"
             >
               <RiSendPlane2Fill />
-            </button>
+            </motion.button>
           </div>
         </div>
 
         {/* Right: Profile Cards */}
-        <div className="hidden md:flex w-1/3 bg-white p-6 flex-col gap-6 border-l border-gray-300">
+        <div className="hidden md:flex w-1/3 bg-white p-6 flex-col gap-6 border-l border-amber-200">
           {/* Search Bar */}
           <div className="flex items-center gap-2 mb-4">
-            <RiSearchLine className="text-gray-500 text-xl" />
+            <RiSearchLine className="text-amber-600 text-xl" />
             <input
               type="text"
               placeholder="Search profiles..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+              className="flex-1 px-3 py-2 border border-amber-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
           </div>
 
           {/* Profile Cards */}
           {[
-            { name: 'Aditya Shetty', title: 'Co-founder of Suo Da', color: 'bg-green-400' },
-            { name: 'Aditya Shetty', title: 'Co-founder of Suo Da', color: 'bg-pink-400' },
+            { name: 'Aditya Shetty', title: 'Co-founder of Suo Da', color: 'bg-amber-300' },
+            { name: 'Riya Kapoor', title: 'Hiring Lead at NovaTech', color: 'bg-yellow-400' },
           ].map((profile, i) => (
-            <div key={i} className="flex items-center gap-4 p-4 border rounded-lg shadow-sm">
-              <div className={`w-12 h-12 rounded-full ${profile.color}`} />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: i * 0.2 }}
+              className="flex items-center gap-4 p-4 border border-amber-200 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition"
+            >
+              <div className={`w-12 h-12 rounded-full ${profile.color} shadow-inner`} />
               <div>
                 <h3 className="font-semibold text-gray-800">{profile.name}</h3>
                 <p className="text-sm text-gray-500">{profile.title}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

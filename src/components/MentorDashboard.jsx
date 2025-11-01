@@ -4,7 +4,8 @@ import {
   RiGridFill,
   RiNotification3Fill,
   RiEdit2Line,
-  RiAddCircleFill
+  RiAddCircleFill,
+  RiVerifiedBadgeFill
 } from 'react-icons/ri'
 import { FcBusinessman } from 'react-icons/fc'
 
@@ -66,25 +67,43 @@ function MentorDashboard() {
 
         {/* Mentor Profile Header */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-amber-100">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome Mentor 👋</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome{} 👋</h2>
           <div className="flex items-center gap-6 mb-6">
-            <div className="w-20 h-20 rounded-full overflow-hidden border border-amber-300 flex items-center justify-center bg-gray-100">
+            <div className="relative w-20 h-20 rounded-full overflow-hidden border border-amber-300 flex items-center justify-center bg-gray-100">
               {profile.profilePic ? (
                 <img src={profile.profilePic} alt="Mentor" className="w-full h-full object-cover" />
               ) : (
                 <FcBusinessman className="text-5xl" />
               )}
+              {profile.verified && (
+                <RiVerifiedBadgeFill className="absolute bottom-0 right-0 text-amber-600 bg-white rounded-full p-0.5 w-5 h-5 shadow-md" />
+              )}
             </div>
             <div>
-              <h3 className="text-xl font-semibold">{profile.fullName || 'Mentor Name'}</h3>
+              <h3 className="text-xl font-semibold text-gray-900">{profile.fullName || 'Mentor Name'}</h3>
               <button className="mt-2 px-3 py-1 bg-amber-600 text-white rounded flex items-center gap-1 text-sm hover:bg-amber-700 transition">
                 <RiEdit2Line /> Edit Profile
               </button>
             </div>
           </div>
-          <p className="text-sm text-gray-700 mb-2"><strong>Expertise:</strong> {profile.expertise}</p>
-          <p className="text-sm text-gray-700 mb-2"><strong>Bio:</strong> {profile.bio}</p>
-          <p className="text-sm text-gray-700"><strong>Rating:</strong> ⭐ {profile.rating}</p>
+
+          {/* Mentor Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700 mb-4">
+            <p><strong>Experience:</strong> {profile.experience} years</p>
+            <p><strong>Company:</strong> {profile.company}</p>
+            <p><strong>Domains:</strong> {profile.domains?.join(', ')}</p>
+            <p><strong>Tech Stack:</strong> {profile.techStack?.join(', ')}</p>
+            <p><strong>Expertise:</strong> {profile.expertise}</p>
+            <p><strong>Problems Solved:</strong> {profile.problemsSolved}</p>
+            <p><strong>DSA Solved:</strong> {profile.dsaSolved}</p>
+            <p><strong>Mentorships:</strong> {profile.mentorshipCount}</p>
+            <p><strong>Referrals:</strong> {profile.referralConnections}</p>
+            <p><strong>Scorecard:</strong> {profile.scoreCard}</p>
+            <p><strong>Rating:</strong> ⭐ {profile.rating}</p>
+            <p><strong>Reviews:</strong> {profile.reviews}</p>
+          </div>
+
+          <p className="text-sm text-gray-700"><strong>Bio:</strong> {profile.bio}</p>
         </div>
 
         {/* Sessions List */}

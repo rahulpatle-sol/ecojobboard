@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const HostSession = () => {
   const [form, setForm] = useState({
@@ -45,10 +45,23 @@ const HostSession = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans p-6">
-      <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Host a Mentorship Session</h2>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-100 to-beige-200 font-sans p-6">
+      <motion.h2
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-3xl font-bold text-center mb-8 text-gray-800"
+      >
+        Host a Mentorship Session
+      </motion.h2>
 
-      <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-6">
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-xl border border-amber-200 space-y-6"
+      >
         <input
           type="text"
           name="title"
@@ -56,7 +69,7 @@ const HostSession = () => {
           onChange={handleChange}
           placeholder="Session Title"
           required
-          className="w-full p-3 border border-gray-300 rounded"
+          className="w-full p-3 border border-amber-300 rounded-md shadow-sm focus:ring-amber-400 focus:outline-none"
         />
         <textarea
           name="description"
@@ -65,7 +78,7 @@ const HostSession = () => {
           placeholder="Session Description"
           rows={4}
           required
-          className="w-full p-3 border border-gray-300 rounded resize-none"
+          className="w-full p-3 border border-amber-300 rounded-md resize-none shadow-sm focus:ring-amber-400 focus:outline-none"
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
@@ -74,7 +87,7 @@ const HostSession = () => {
             value={form.date}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-gray-300 rounded"
+            className="w-full p-3 border border-amber-300 rounded-md shadow-sm"
           />
           <input
             type="time"
@@ -82,7 +95,7 @@ const HostSession = () => {
             value={form.time}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-gray-300 rounded"
+            className="w-full p-3 border border-amber-300 rounded-md shadow-sm"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -91,7 +104,7 @@ const HostSession = () => {
             value={form.mode}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-gray-300 rounded"
+            className="w-full p-3 border border-amber-300 rounded-md shadow-sm"
           >
             <option value="">Select Mode</option>
             <option value="Online">Online</option>
@@ -104,7 +117,7 @@ const HostSession = () => {
             onChange={handleChange}
             placeholder="Platform / Location"
             required
-            className="w-full p-3 border border-gray-300 rounded"
+            className="w-full p-3 border border-amber-300 rounded-md shadow-sm"
           />
         </div>
         <input
@@ -114,16 +127,17 @@ const HostSession = () => {
           onChange={handleChange}
           placeholder="Max Participants"
           required
-          className="w-full p-3 border border-gray-300 rounded"
+          className="w-full p-3 border border-amber-300 rounded-md shadow-sm"
         />
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.97 }}
           type="submit"
-          className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition"
+          className="w-full py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition shadow-md"
         >
           Host Session
-        </button>
-      </form>
+        </motion.button>
+      </motion.form>
     </div>
   );
 };

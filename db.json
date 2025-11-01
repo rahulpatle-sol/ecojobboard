@@ -94,14 +94,28 @@
   ],
   "mentorProfiles": [
     {
-      "userId": "u3",
-      "expertise": "System Design, DSA",
-      "bio": "Helping candidates crack FAANG interviews",
-      "linkedin": "https://linkedin.com/in/pranav",
-      "sessionsHosted": 12,
-      "rating": 4.8,
-      "id": "df41"
-    }
+  "id": "m101",
+  "userId": "u3",
+  "fullName": "Pranav Sharma",
+  "profilePic": "https://avatars.githubusercontent.com/u/00000000?v=4",
+  "verified": true,
+  "experience": 5,
+  "company": "Google",
+  "domains": ["System Design", "Backend Engineering", "Interview Prep"],
+  "techStack": ["Node.js", "Express", "MongoDB", "Redis", "AWS"],
+  "expertise": "System Design, DSA",
+  "bio": "Helping candidates crack FAANG interviews with real-world system design and DSA mastery.",
+  "linkedin": "https://linkedin.com/in/pranav",
+  "problemsSolved": 450,
+  "dsaSolved": 320,
+  "mentorshipCount": 38,
+  "referralConnections": 12,
+  "scoreCard": "92%",
+  "rating": 4.8,
+  "reviews": 27
+}
+
+    
   ],
   "jobs": [
     {
