@@ -11,6 +11,7 @@ import FinalCTASection from './components/FinalCtaSection'
 import ContactSection from './components/ContacSection'
 import FooterSection from './components/Footer'
 import RecruitmentLifecycle from './components/Recruitment'
+import PartnersCircle from './components/PartnerCircle'
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
       <JobSearchSection/>
       <BenefitsSection/>
       <TestimonialSection></TestimonialSection>
+      <PartnersCircle />
      <PricingSection/>
      <FinalCTASection/>
      <ContactSection/>

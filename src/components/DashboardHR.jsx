@@ -44,7 +44,7 @@ export default function DashboardHR() {
   useEffect(() => {
     const fetchRecommended = async () => {
       try {
-        const hrRes = await fetch(`http://localhost:3000/hrProfiles?userId`);
+        const hrRes = await fetch(`http://localhost:3000/hrProfiles`);
         const hrData = await hrRes.json();
         const postedJobs = hrData[0]?.postedJobs || [];
 
@@ -95,7 +95,7 @@ export default function DashboardHR() {
 
         {/* HR Profile */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-amber-200">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome HR 👋</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome {profile.name}👋</h2>
           <div className="flex items-center gap-6 mb-6">
             <div className="relative w-20 h-20 rounded-full overflow-hidden border border-amber-300 flex items-center justify-center bg-gray-100">
               {profile.companyLogo ? (

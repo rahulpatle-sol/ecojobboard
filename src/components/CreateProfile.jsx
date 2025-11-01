@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const  CreateProfile=()=> {
+const CreateProfile = () => {
   const [form, setForm] = useState({
     profileHeadline: '',
     skills: '',
@@ -24,8 +24,8 @@ const  CreateProfile=()=> {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = location.state?.userId;
-  const role = location.state?.role;
+  const userId = location.state?.userId || '';
+  const role = location.state?.role || 'jobseeker';
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -38,6 +38,10 @@ const  CreateProfile=()=> {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userId) {
+      alert('User ID missing. Please login again.');
+      return;
+    }
 
     const profileData = {
       ...form,
@@ -48,7 +52,7 @@ const  CreateProfile=()=> {
     };
 
     try {
-      const res = await fetch('http://localhost:3000/profiles', {
+      const res = await fetch('http://localhost:3000/jobseekerProfiles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profileData),
@@ -56,7 +60,9 @@ const  CreateProfile=()=> {
 
       if (res.ok) {
         alert('Profile created successfully!');
-        navigate(`/${role}/${userId}/dashboard`);
+        navigate(`/DashboardJobseeker/${userId}`, {
+          state: { userId, role }
+        });
       } else {
         alert('Failed to submit.');
       }
@@ -67,16 +73,16 @@ const  CreateProfile=()=> {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white px-6 py-12 overflow-y-auto font-sans">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen w-full bg-gradient-to-br from-amber-50 via-yellow-100 to-beige-200 px-6 py-12 overflow-y-auto font-sans">
+      <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md border border-amber-200">
         <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">
           Create Your Endless Profile
         </h1>
 
         {/* Profile Pic Upload */}
-        <div className="mb-6 flex flex-col items-center">
+        <div className="mb-8 flex flex-col items-center">
           <label className="text-sm font-medium text-gray-700 mb-2">Upload Profile Pic</label>
-          <div className="w-28 h-28 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
+          <div className="w-28 h-28 rounded-full overflow-hidden border border-amber-300 bg-gray-100 flex items-center justify-center shadow-sm">
             {form.profilePic ? (
               <img
                 src={URL.createObjectURL(form.profilePic)}
@@ -97,7 +103,7 @@ const  CreateProfile=()=> {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[
             { label: 'Profile Headline', name: 'profileHeadline' },
             { label: 'Skills', name: 'skills' },
@@ -124,16 +130,16 @@ const  CreateProfile=()=> {
                 value={form[field.name]}
                 onChange={handleChange}
                 required
-                className="w-full p-3 border border-gray-300 rounded-md"
+                className="w-full p-3 border border-amber-300 rounded-md shadow-sm focus:ring-amber-400 focus:outline-none"
               />
             </div>
           ))}
 
           {/* Submit Button */}
-          <div className="flex justify-center mt-8">
+          <div className="col-span-1 md:col-span-2 flex justify-center mt-6">
             <button
               type="submit"
-              className="px-6 py-3 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition"
+              className="px-6 py-3 bg-amber-600 text-white font-semibold rounded-full hover:bg-amber-700 transition shadow-md"
             >
               Save Profile
             </button>
@@ -142,6 +148,6 @@ const  CreateProfile=()=> {
       </div>
     </div>
   );
-}
+};
 
 export default CreateProfile;

@@ -77,6 +77,26 @@
       "resume": "/resume/rahul.pdf",
       "profilePic": "/profilePic/rahul.png",
       "id": "afd8"
+    },
+    {
+      "id": 1761997104100,
+      "profileHeadline": "solana developer ",
+      "skills": "solana rust ",
+      "experience": "2",
+      "education": "PHD IN defi",
+      "itSkills": "defi  nft",
+      "projects": "metdesft",
+      "github": "https://github.com",
+      "linkedin": "https://linkdin.com",
+      "certification": "defi coursera",
+      "achievements": "hackthon ",
+      "languages": "hindi  english  ",
+      "careerProfile": "blockchain developer",
+      "jobRole": "solana dev",
+      "employmentType": "full  time ",
+      "location": "Berlin",
+      "resume": "http://localhost:3000/jobseekerProfiles?",
+      "profilePic": "blob:http://localhost:5173/f4bb2fcd-6b54-4bdc-9b57-5197e93240d0"
     }
   ],
   "hrProfiles": [
@@ -94,28 +114,36 @@
   ],
   "mentorProfiles": [
     {
-  "id": "m101",
-  "userId": "u3",
-  "fullName": "Pranav Sharma",
-  "profilePic": "https://avatars.githubusercontent.com/u/00000000?v=4",
-  "verified": true,
-  "experience": 5,
-  "company": "Google",
-  "domains": ["System Design", "Backend Engineering", "Interview Prep"],
-  "techStack": ["Node.js", "Express", "MongoDB", "Redis", "AWS"],
-  "expertise": "System Design, DSA",
-  "bio": "Helping candidates crack FAANG interviews with real-world system design and DSA mastery.",
-  "linkedin": "https://linkedin.com/in/pranav",
-  "problemsSolved": 450,
-  "dsaSolved": 320,
-  "mentorshipCount": 38,
-  "referralConnections": 12,
-  "scoreCard": "92%",
-  "rating": 4.8,
-  "reviews": 27
-}
-
-    
+      "id": "m101",
+      "userId": "u3",
+      "fullName": "Pranav Sharma",
+      "profilePic": "https://avatars.githubusercontent.com/u/00000000?v=4",
+      "verified": true,
+      "experience": 5,
+      "company": "Google",
+      "domains": [
+        "System Design",
+        "Backend Engineering",
+        "Interview Prep"
+      ],
+      "techStack": [
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Redis",
+        "AWS"
+      ],
+      "expertise": "System Design, DSA",
+      "bio": "Helping candidates crack FAANG interviews with real-world system design and DSA mastery.",
+      "linkedin": "https://linkedin.com/in/pranav",
+      "problemsSolved": 450,
+      "dsaSolved": 320,
+      "mentorshipCount": 38,
+      "referralConnections": 12,
+      "scoreCard": "92%",
+      "rating": 4.8,
+      "reviews": 27
+    }
   ],
   "jobs": [
     {
