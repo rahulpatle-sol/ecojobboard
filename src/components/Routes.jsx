@@ -22,7 +22,7 @@ import PostJob from './PostJob';
 
 import MentorDashbaord from './MentorDashboard'
 import HostSession from './HostSession';
-
+import MentorProfile from  "./AssessmentSections/Mentorprofile"
 
 export default function AppRoutes() {
   return (
@@ -45,6 +45,8 @@ export default function AppRoutes() {
        <Route path="/PostJOB" element={<PostJob/>}></Route>
        <Route path='/MentorDashboard' element={<MentorDashbaord/>}></Route>
        <Route path='/HostSession' element={<HostSession/>}></Route>
+       <Route path="/mentor/:name" element={<MentorProfile />} />
+
     </Routes>
   );
 }

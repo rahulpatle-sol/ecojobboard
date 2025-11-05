@@ -1,28 +1,25 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import mentorAvatar from '../../assets/mentor.png'; // Add your PNG here
+import { useNavigate } from 'react-router-dom';
+import mentorAvatar from '../../assets/mentor.png';
 
 export default function MentorDiscussion() {
+  const navigate = useNavigate();
+
   const mentors = [
-    {
-      name: 'Aarav Mehta',
-      role: 'DSA & System Design',
-      slot: 'Monday, 4 PM IST',
-      meetLink: 'https://meet.google.com/aarav-session',
-    },
-    {
-      name: 'Ishita Verma',
-      role: 'UI/UX & Portfolio Review',
-      slot: 'Tuesday, 6 PM IST',
-      meetLink: 'https://meet.google.com/ishita-session',
-    },
-    {
-      name: 'Rohan Kapoor',
-      role: 'Web3 & Rust Debugging',
-      slot: 'Wednesday, 8 PM IST',
-      meetLink: 'https://meet.google.com/rohan-session',
-    },
+    { name: 'Aarav Mehta', role: 'DSA Fundamentals, System Design' },
+    { name: 'Ishita Verma', role: 'UI/UX, Portfolio Review, Frontend' },
+    { name: 'Rohan Kapoor', role: 'Web3, Rust, MERN Stack' },
+    { name: 'Sneha Rao', role: 'Java, Android, Swift' },
+    { name: 'Kabir Singh', role: 'Communication, Interview Prep, HR Management' },
+    { name: 'Neha Joshi', role: 'General Awareness, Computer Basics, Soft Skills' },
   ];
+
+  const [query, setQuery] = useState('');
+
+  const filteredMentors = mentors.filter((mentor) =>
+    mentor.role.toLowerCase().includes(query.toLowerCase())
+  );
 
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -34,7 +31,7 @@ export default function MentorDiscussion() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
+    <div className="max-w-6xl mx-auto px-4 py-10">
       <motion.h2
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -48,13 +45,21 @@ export default function MentorDiscussion() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="text-base text-slate-600 mb-8"
+        className="text-base text-slate-600 mb-6"
       >
-        Pick your mentor, drop in for a session, and get feedback that actually helps. No fluff, just real talk 💬
+        Search by topic or skill — DSA, UI/UX, MERN, Java, Interview, Soft Skills… and book your session 💬
       </motion.p>
 
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search by topic (e.g. DSA, MERN, Interview)"
+        className="w-full px-4 py-2 border border-amber-300 rounded-md text-sm mb-8 focus:outline-none focus:ring-2 focus:ring-amber-400"
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mentors.map((mentor, i) => (
+        {filteredMentors.map((mentor, i) => (
           <motion.div
             key={mentor.name}
             custom={i}
@@ -63,24 +68,15 @@ export default function MentorDiscussion() {
             variants={fadeUp}
             className="p-5 bg-white rounded-xl shadow-md border border-amber-200 hover:shadow-lg transition"
           >
-            <img
-              src={mentorAvatar}
-              alt="Mentor Avatar"
-              className="w-16 h-16 rounded-full mb-4 mx-auto"
-            />
+            <img src={mentorAvatar} alt="Mentor Avatar" className="w-16 h-16 rounded-full mb-4 mx-auto" />
             <h3 className="text-lg font-semibold text-amber-700 text-center">{mentor.name}</h3>
-            <p className="text-sm text-gray-600 text-center mb-2">{mentor.role}</p>
-            <p className="text-sm text-gray-700 text-center mb-4">
-              Next slot: <strong>{mentor.slot}</strong>
-            </p>
-            <a
-              href={mentor.meetLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
+            <p className="text-sm text-gray-600 text-center mb-4">{mentor.role}</p>
+            <button
+              onClick={() => navigate(`/mentor/${encodeURIComponent(mentor.name)}`)}
+              className="block w-full text-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
             >
-              Join Meet →
-            </a>
+              View Profile →
+            </button>
           </motion.div>
         ))}
       </div>
