@@ -1,24 +1,33 @@
-// src/auth/signup.js
-
 export async function signup(userData) {
-
-  // error handling logic 
   try {
-    //  api  endpoints 
-    const res = await fetch('http://localhost:3000/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
-    });// db  
-
-    if (!res.ok) {
-      throw new Error('Failed to signup');
+    const formData = new FormData();
+    formData.append("fullName", userData.name);
+    formData.append("email", userData.email);
+    formData.append("password", userData.password);
+    
+    // Direct enum values: TALENT, HR, or MENTOR
+    formData.append("role", userData.role); 
+    
+    // Profile picture handling
+    if (userData.profilePic) {
+      formData.append("profilePic", userData.profilePic); 
     }
 
-    const data = await res.json();
-    return data;
+    const response = await fetch('http://localhost:8000/api/v1/users/register', {
+      method: 'POST',
+      body: formData, 
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      return result; // Isme success aur message hoga
+    } else {
+      console.error("Signup error result:", result);
+      return null;
+    }
   } catch (err) {
-    console.error('Signup error:', err);
+    console.error("Connection error during signup:", err);
     return null;
   }
 }

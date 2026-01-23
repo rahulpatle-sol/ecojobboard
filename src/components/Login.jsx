@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../auth/auth';
 import { FcGoogle } from "react-icons/fc";
 import { HiCube } from "react-icons/hi";
+import { toast } from 'react-toastify';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -14,40 +16,60 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const user = await login(form.email, form.password);
 
     if (user) {
-      alert('Login successful!');
+      toast.success('Bhai, swagat hai!');
+      
+      // Backend Enum Roles Mapping: TALENT, HR, MENTOR
       const routeMap = {
-        jobseeker: `/DashboardJobseeker/${user.id}`,
-        hr: `/DashboardHR/${user.id}`,
-        mentor: `/MentorDashboard/${user.id}`
+        TALENT: `/DashboardJobseeker/${user.id}`,
+        HR: `/DashboardHR`,
+        MENTOR: `/MentorDashboard`
       };
-      navigate(routeMap[user.role] || '/WelcomeSection', {
-        state: { userId: user.id, role: user.role }
-      });
+      
+      // Agar role match nahi hota toh default WelcomeSection
+      navigate(routeMap[user.role] || '/WelcomeSection');
     } else {
-      alert('Invalid credentials. Please try again.');
+      toast.error('Invalid credentials. Please try again.');
     }
+    setLoading(false);
+  };
+
+  const handleGoogleLogin = () => {
+    // Passport.js endpoint for Google Auth
+    window.location.href = "http://localhost:8000/api/v1/users/auth/google";
   };
 
   return (
-    <div className="flex h-screen w-screen font-sans bg-gradient-to-br from-amber-50 via-yellow-100 to-beige-200">
+    <div className="flex h-screen w-screen font-sans bg-[#0f172a] text-white">
       {/* Left: Login Form */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16">
+      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 bg-[#0f172a]">
         <div className="max-w-md mx-auto w-full">
-          <HiCube className="text-6xl text-amber-600 mb-4" />
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">Login</h2>
+          <div className="flex items-center gap-2 mb-6">
+            <HiCube className="text-5xl text-blue-500" />
+            <h1 className="text-2xl font-bold tracking-tight">Skill2Hire</h1>
+          </div>
+          
+          <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
+          <p className="text-slate-400 mb-8">Login to access your dashboard</p>
 
-          {/* Google Login */}
-          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-md mb-4 hover:bg-gray-100 transition">
-            <FcGoogle className="text-xl" />
-            <span>Login with Google</span>
+          {/* Google Login Button */}
+          <button 
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 bg-white text-slate-900 py-3 rounded-xl font-bold hover:bg-slate-100 transition shadow-lg mb-6"
+          >
+            <FcGoogle className="text-2xl" />
+            <span>Continue with Google</span>
           </button>
 
-          {/* Email Login */}
-          <p className="text-sm text-gray-500 mb-2">Login with Email & Password</p>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <div className="relative py-4 text-center">
+            <span className="bg-[#0f172a] px-4 text-slate-500 text-xs uppercase tracking-widest font-bold z-10 relative">OR LOGIN WITH EMAIL</span>
+            <hr className="border-slate-800 absolute top-1/2 w-full" />
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4 mt-4">
             <input
               type="email"
               name="email"
@@ -55,7 +77,7 @@ function Login() {
               onChange={handleChange}
               placeholder="alex@email.com"
               required
-              className="w-full border border-amber-300 rounded-md px-4 py-2 shadow-sm focus:ring-amber-400 focus:outline-none"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
             />
             <input
               type="password"
@@ -64,52 +86,47 @@ function Login() {
               onChange={handleChange}
               placeholder="••••••••"
               required
-              className="w-full border border-amber-300 rounded-md px-4 py-2 shadow-sm focus:ring-amber-400 focus:outline-none"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
             />
 
-            <div className="flex justify-between text-xs text-gray-500">
-              <label><input type="checkbox" className="mr-1" />Remember me</label>
-              <a href="/ForgetPassword" className="hover:underline">Forget Password</a>
+            <div className="flex justify-between text-sm text-slate-400">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="accent-blue-500" /> Remember me
+              </label>
+              <button 
+                type="button"
+                onClick={() => navigate('/ForgetPassword')} 
+                className="text-blue-400 hover:underline"
+              >
+                Forgot Password?
+              </button>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700 transition shadow-md"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-600/20"
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
-            No account? <a href="/signup" className="text-amber-600 hover:underline">Sign up here</a>
-          </p>
-          <p className="text-center text-sm text-gray-500 mt-2">
-            New user? <a href="/WelcomeSection" className="text-amber-600 hover:underline">Explore platform</a>
+          <p className="text-center text-slate-400 mt-8">
+            Don't have an account? <button onClick={() => navigate('/signup')} className="text-blue-400 font-bold hover:underline">Sign up</button>
           </p>
         </div>
       </div>
 
       {/* Right: Decorative Panel */}
-      <div className="hidden md:flex w-1/2 bg-amber-100 relative items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-200 via-yellow-100 to-beige-100 opacity-60" />
-        <img
-          src="https://cdn.pixabay.com/photo/2018/07/11/14/09/hiring-3531130_640.jpg"
-          alt="Hiring"
-          className="absolute top-10 left-10 w-48 h-auto object-contain rounded-xl shadow-md"
-        />
-        <img
-          src="https://cdn.pixabay.com/photo/2020/07/03/09/01/outsourcing-5365729_960_720.png"
-          alt="Outsourcing"
-          className="absolute top-40 left-32 w-48 h-auto object-contain rounded-xl shadow-md"
-        />
-        <img
-          src="https://cdn.pixabay.com/photo/2023/03/04/06/53/office-7829030_640.jpg"
-          alt="Office"
-          className="absolute bottom-10 right-10 w-48 h-auto object-contain rounded-xl shadow-md"
-        />
-        <p className="absolute bottom-10 left-10 text-amber-700 text-4xl font-bold">
-          We build the future
-        </p>
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-900 to-indigo-950 relative items-center justify-center p-12">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+        <div className="z-10 text-center">
+            <div className="bg-blue-500/10 p-6 rounded-3xl inline-block mb-6 backdrop-blur-3xl border border-white/10">
+                <img src="https://cdn.pixabay.com/photo/2020/07/03/09/01/outsourcing-5365729_960_720.png" className="w-64 h-auto" alt="Hero" />
+            </div>
+            <h2 className="text-4xl font-black mb-4">Connecting Talent <br/> with Opportunity</h2>
+            <p className="text-blue-200 text-lg">Your gateway to the next big step in your career.</p>
+        </div>
       </div>
     </div>
   );

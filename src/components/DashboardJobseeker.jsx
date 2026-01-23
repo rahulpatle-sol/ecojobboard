@@ -1,339 +1,195 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-// Using Lucide Icons for a clean, professional look (replacing react-icons)
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { 
-  LayoutDashboard, List, Bell, Edit, CheckCircle, AlertTriangle, X, User, Briefcase, MapPin, DollarSign, Clock, Search, ShieldCheck, Square // <-- FIX: Added Square
+  LayoutDashboard, Bell, Edit, CheckCircle, AlertTriangle, X, User, Briefcase, 
+  MapPin, DollarSign, Clock, Search, ShieldCheck, Square, LogOut, ChevronRight 
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion'; // For Premium Animations
 
-// --- HELPER COMPONENTS ---
-
-// 1. Custom Notification Component (Replaces alert())
-const Notification = ({ message, type, isVisible, onClose }) => {
+// --- FIXED NOTIFICATION COMPONENT ---
+const AppNotification = ({ message, type, isVisible, onClose }) => {
   if (!isVisible) return null;
-
-  const typeClasses = {
-    success: 'bg-green-50 border-green-400 text-green-700',
-    error: 'bg-red-50 border-red-400 text-red-700',
-  };
+  const bgColor = type === 'success' ? 'bg-emerald-500' : 'bg-rose-500';
   
-  const Icon = type === 'success' ? CheckCircle : AlertTriangle;
-
-  useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(onClose, 4000); // Auto-hide after 4 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [isVisible, onClose]);
-
   return (
-    <div className="fixed top-4 right-4 z-[100] w-full max-w-sm transition-opacity duration-300 ease-in-out opacity-100">
-      <div 
-        className={`flex items-center p-4 rounded-xl border-l-4 shadow-xl ${typeClasses[type]}`}
-        role="alert"
-      >
-        <Icon className="w-5 h-5 mr-3 flex-shrink-0" />
-        <span className="text-sm font-medium">{message}</span>
-        <button 
-          onClick={onClose} 
-          className="ml-auto p-1.5 rounded-full hover:bg-opacity-80 transition"
-          aria-label="Close"
-        >
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
+    <motion.div 
+      initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+      className={`fixed top-5 right-5 z-[100] ${bgColor} text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3`}
+    >
+      {type === 'success' ? <CheckCircle size={20} /> : <AlertTriangle size={20} />}
+      <span className="font-medium">{message}</span>
+      <button onClick={onClose} className="hover:rotate-90 transition-transform"><X size={18} /></button>
+    </motion.div>
   );
 };
 
-// 2. Skeleton Loader for Job Cards (Premium Loading State)
-const JobCardSkeleton = () => (
-  <div className="animate-pulse mb-6 p-6 rounded-2xl bg-white shadow-lg border border-slate-100">
-    <div className="h-5 bg-slate-200 rounded w-3/4 mb-3"></div>
-    <div className="h-4 bg-slate-100 rounded w-full mb-4"></div>
-    <div className="grid grid-cols-2 gap-3 text-sm">
-      <div className="h-3 bg-slate-100 rounded w-5/6"></div>
-      <div className="h-3 bg-slate-100 rounded w-5/6"></div>
-      <div className="h-3 bg-slate-100 rounded w-2/3"></div>
-      <div className="h-3 bg-slate-100 rounded w-2/3"></div>
-    </div>
-    <div className="mt-4 h-10 bg-indigo-200 rounded-xl w-24"></div>
-  </div>
-);
-
-
-// --- MAIN COMPONENT ---
 function DashboardJobseeker() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  
   const [profile, setProfile] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [loadingProfile, setLoadingProfile] = useState(true);
-  const [loadingJobs, setLoadingJobs] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
-  // Mock Data Fetching (Simulating API calls)
-  useEffect(() => {
-    setLoadingProfile(true);
-    // Note: Localhost calls are not runnable in the sandbox, but the structure is maintained.
-    fetch(`http://localhost:3000/jobseekerProfiles?userId=${id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.length > 0) setProfile(data[0]);
-        setLoadingProfile(false);
-      })
-      .catch(err => {
-        console.error('Error fetching profile:', err);
-        setLoadingProfile(false);
-      });
-  }, [id]);
+  const token = localStorage.getItem("accessToken");
 
+  // --- FETCH DATA ---
   useEffect(() => {
-    setLoadingJobs(true);
-    fetch('http://localhost:3000/jobs')
-      .then(res => res.json())
-      .then(data => {
-        setJobs(data);
-        setLoadingJobs(false);
-      })
-      .catch(err => {
-        console.error('Error fetching jobs:', err);
-        setLoadingJobs(false);
-      });
-  }, []);
+    if (!token) { navigate('/login'); return; }
+
+    const fetchData = async () => {
+      try {
+        const [profRes, jobsRes] = await Promise.all([
+          axios.get('http://localhost:8000/api/v1/users/me', { headers: { Authorization: `Bearer ${token}` }}),
+          axios.get('http://localhost:8000/api/v1/jobs', { headers: { Authorization: `Bearer ${token}` }})
+        ]);
+        setProfile(profRes.data.data);
+        setJobs(jobsRes.data.data || []);
+      } catch (err) {
+        if (err.response?.status === 401) navigate('/login');
+      } finally {
+        setLoadingProfile(false);
+      }
+    };
+    fetchData();
+  }, [navigate, token]);
 
   const handleApply = async (jobId) => {
-    // Prevent double notifications
-    setNotification({ ...notification, visible: false }); 
-
-    const application = {
-      jobId,
-      userId: id,
-      appliedAt: new Date().toISOString()
-    };
-
     try {
-      // Simulate successful/failed application based on environment
-      const isMockSuccess = Math.random() > 0.3; // 70% chance of success for mock
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API delay
-
-      if (isMockSuccess) {
-        // SUCCESS Notification
-        setNotification({ 
-          message: 'Application submitted successfully! Good luck.', 
-          type: 'success', 
-          visible: true 
-        });
-      } else {
-        // FAILURE Notification
-        setNotification({ 
-          message: 'Failed to apply. Please try again.', 
-          type: 'error', 
-          visible: true 
-        });
-      }
-
-      // const res = await fetch('http://localhost:3000/applications', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(application)
-      // });
-
-      // if (res.ok) {
-      //   setNotification({ message: 'Applied successfully!', type: 'success', visible: true });
-      // } else {
-      //   setNotification({ message: 'Failed to apply.', type: 'error', visible: true });
-      // }
+      await axios.post(`http://localhost:8000/api/v1/jobs/apply/${jobId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setNotification({ message: 'Applied Successfully! 🚀', type: 'success', visible: true });
     } catch (e) {
-      setNotification({ message: 'Network error during application.', type: 'error', visible: true });
+      setNotification({ message: 'Already Applied or Error!', type: 'error', visible: true });
     }
   };
 
-  const handleCloseNotification = () => setNotification({ ...notification, visible: false });
-
-  const filteredJobs = jobs.filter(job =>
-    job.hiringRole.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    job.companyName?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Profile Skeleton Loader
-  const ProfileSkeleton = () => (
-    <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-slate-100 animate-pulse">
-        <div className="h-6 bg-slate-200 rounded w-1/3 mb-6"></div>
-        <div className="flex items-center gap-6 mb-6">
-            <div className="w-20 h-20 rounded-full bg-slate-200 flex-shrink-0"></div>
-            <div>
-                <div className="h-5 bg-slate-200 rounded w-48 mb-2"></div>
-                <div className="h-8 bg-indigo-100 rounded-xl w-28"></div>
-            </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-            {[...Array(6)].map((_, i) => (
-                <div key={i}><div className="h-3 bg-slate-100 rounded w-full"></div></div>
-            ))}
-        </div>
+  if (loadingProfile) return (
+    <div className="h-screen w-full flex flex-col items-center justify-center bg-slate-50">
+      <div className="w-12 h-12 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p className="text-slate-600 font-medium animate-pulse">Setting up your console...</p>
     </div>
   );
 
-
   return (
-    <div className="flex min-h-screen bg-amber-50 font-sans">
-      
-      {/* Custom Notification Mount */}
-      <Notification 
-        message={notification.message} 
-        type={notification.type} 
-        isVisible={notification.visible} 
-        onClose={handleCloseNotification} 
-      />
+    <div className="flex h-screen bg-[#F8FAFC] overflow-hidden">
+      <AnimatePresence>
+        <AppNotification {...notification} onClose={() => setNotification({ ...notification, visible: false })} />
+      </AnimatePresence>
 
-      {/* Left Toolbar (Animated & Premium) */}
-      <div className="w-20 bg-slate-800 shadow-2xl flex flex-col items-center py-6 space-y-8 text-slate-400 text-xl transition-all duration-300">
-        <Link 
-          to="/" 
-          className="p-3 rounded-xl hover:bg-slate-700 hover:text-amber-300 transition-colors duration-200 group"
-          title="Dashboard"
-        >
-          <LayoutDashboard className="text-indigo-400 w-7 h-7 mb-4" />
-        </Link>
+      {/* --- PREMIUM SIDEBAR --- */}
+      <aside className="w-24 bg-slate-900 flex flex-col items-center py-8 gap-10 border-r border-slate-800">
+        <div className="w-12 h-12 bg-amber-400 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.4)]">
+          <Briefcase className="text-slate-900" size={24} />
+        </div>
         
-        {/* Navigation Items */}
-        {/* <Link 
-        to="/DashboardJobseeker/{id}" 
-          className="p-3 rounded-xl hover:bg-slate-700 hover:text-indigo-300 transition-colors duration-200 group"
-          title="Dashboard"
-        >
-          <List className="w-6 h-6" />
-        </Link> */}
-        <Link 
-          to="/Assessment" 
-          className="p-3 rounded-xl hover:bg-slate-700 hover:text-amber-300 transition-colors duration-200 group"
-          title="Assessment"
-        >
-          <Square className="w-6 h-6" />
-        </Link>
-        <Link 
-          to="/Verified" 
-          className="p-3 rounded-xl hover:bg-slate-700 hover:text-amber-300 transition-colors duration-200 group"
-          title="Verification"
-        >
-          <ShieldCheck className="w-6 h-6" />
-        </Link>
-        <Link 
-          to="/Notification" 
-          className="p-3 rounded-xl hover:bg-slate-700 hover:text-amber-300 transition-colors duration-200 group"
-          title="Notifications"
-        >
-          <Bell className="w-6 h-6" />
-        </Link>
-      </div>
+        <nav className="flex flex-col gap-6">
+          <SidebarIcon icon={<LayoutDashboard size={24} />} active />
+          <SidebarIcon icon={<Square size={24} />} />
+          <SidebarIcon icon={<ShieldCheck size={24} />} />
+          <SidebarIcon icon={<User size={24} />} />
+        </nav>
 
-      {/* Main Content Area */}
-      <div className="flex-1 p-6 md:p-10 overflow-y-auto">
-        
-        {/* Top Bar with Search & User Avatar */}
-        <div className="flex justify-between items-center mb-8">
-          <div className="relative w-full max-w-lg">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search jobs or companies..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-10 py-3 w-full border border-slate-300 rounded-xl shadow-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-300"
+        <button 
+          onClick={() => { localStorage.clear(); navigate('/login'); }}
+          className="mt-auto p-4 text-slate-500 hover:text-rose-400 transition-colors"
+        >
+          <LogOut size={24} />
+        </button>
+      </aside>
+
+      {/* --- MAIN CONTENT --- */}
+      <main className="flex-1 overflow-y-auto custom-scrollbar">
+        {/* Header */}
+        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md px-10 py-6 flex justify-between items-center border-b border-slate-200">
+          <div>
+            <h1 className="text-xl font-bold text-slate-800">Welcome Back, {profile?.fullName.split(' ')[0]} 👋</h1>
+            <p className="text-sm text-slate-500">Here’s what’s happening with your applications.</p>
+          </div>
+          <div className="flex items-center gap-4 bg-white p-1 pr-4 rounded-full shadow-sm border border-slate-100">
+            <img 
+              src={profile?.profilePic || `https://ui-avatars.com/api/?name=${profile?.fullName}&background=FBBF24&color=fff`} 
+              className="w-10 h-10 rounded-full object-cover" 
+              alt="User" 
             />
-          </div>
-          <div className="w-10 h-10 rounded-full bg-indigo-500 shadow-lg flex-shrink-0" />
-        </div>
-
-        {/* Profile Header Card */}
-        {loadingProfile ? <ProfileSkeleton /> : (
-          <div className="bg-amber-50 rounded-2xl shadow-xl p-6 md:p-8 mb-10 border border-slate-100 transition-all duration-300 hover:shadow-2xl">
-            <h2 className="text-3xl font-extrabold mb-4 text-slate-800">
-              Welcome back, <span className="text-amber-600">{profile?.fullName.split(' ')[0]}</span> 👋
-            </h2>
-            
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-6 border-t pt-6">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-indigo-200 flex items-center justify-center bg-gray-100 shadow-md flex-shrink-0">
-                {profile.profilePic ? (
-                  <img src={profile.profilePic} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  <User className="text-amber-500 w-12 h-12" />
-                )}
-              </div>
-              
-              <div className="flex-1">
-                <h3 className="text-2xl font-semibold text-slate-800">{profile.fullName}</h3>
-                <p className="text-amber-700 font-medium mb-3">{profile.profileHeadline || 'A passionate jobseeker.'}</p>
-                <button className="px-4 py-2 bg-amber-600 text-white rounded-xl flex items-center gap-2 text-sm font-medium hover:bg-indigo-700 transition transform hover:scale-[1.01] shadow-md">
-                  <Edit className="w-4 h-4" /> Update Profile
-                </button>
-              </div>
+            <div className="hidden md:block">
+              <p className="text-xs font-bold text-slate-800 leading-none">{profile?.fullName}</p>
+              <p className="text-[10px] text-amber-600 font-bold uppercase mt-1 tracking-wider">{profile?.role}</p>
             </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-6 text-sm text-slate-700 border-t pt-4">
-              <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-amber-400" /><strong>Location:</strong> {profile.location || 'Global'}</div>
-              <div className="flex items-center gap-2"><User className="w-4 h-4 text-amber-400" /><strong>Nickname:</strong> {profile.nickName || 'N/A'}</div>
-              <div className="flex items-center gap-2"><Bell className="w-4 h-4 text-amber-400" /><strong>Email:</strong> {profile.email || 'Hidden'}</div>
-              <div className="flex items-center gap-2"><Briefcase className="w-4 h-4 text-amber-400" /><strong>Country:</strong> {profile.country || 'India'}</div>
-              <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-amber-400" /><strong>Gender:</strong> {profile.gender || 'N/A'}</div>
-            </div>
-
           </div>
-        )}
+        </header>
 
-        {/* Job Recommendations Section */}
-        <h2 className="text-2xl font-bold mb-6 text-slate-800 border-b pb-2">Top Job Opportunities</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loadingJobs ? (
-            <>
-              <JobCardSkeleton /><JobCardSkeleton /><JobCardSkeleton />
-            </>
-          ) : filteredJobs.length === 0 ? (
-            <p className="text-slate-600 col-span-full p-8 text-center bg-white rounded-xl shadow-lg">
-              No matching jobs found. Try adjusting your search query.
-            </p>
-          ) : (
-            filteredJobs.map(job => (
-              <div
-                key={job.id}
-                className="p-6 rounded-2xl bg-white border border-slate-200 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-xl font-bold text-slate-900">{job.hiringRole}</h3>
-                  <div className="text-xs font-semibold text-white bg-amber-500 px-3 py-1 rounded-full">{job.employmentType || 'Full-Time'}</div>
-                </div>
+        <div className="p-10 max-w-7xl mx-auto">
+          {/* Stats Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <StatsCard label="Applied Jobs" value="12" icon={<Briefcase className="text-blue-500" />} />
+            <StatsCard label="Interview Invites" value="04" icon={<Clock className="text-amber-500" />} />
+            <StatsCard label="Profile Strength" value="85%" icon={<ShieldCheck className="text-emerald-500" />} />
+          </div>
 
-                <p className="text-slate-500 mb-4 line-clamp-2">{job.jobDesc}</p>
-                
-                <div className="space-y-2 text-sm text-slate-700">
-                  <div className="flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-indigo-500" />
-                    <strong>{job.companyName || 'Confidential'}</strong>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-indigo-500" />
-                    <span>{job.location || 'Remote'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-indigo-500" />
-                    <span>{job.payoutScale || 'Competitive'}</span>
-                  </div>
-                </div>
-                
-                <button
-                  onClick={() => handleApply(job.id)}
-                  className="mt-6 w-full px-4 py-3 bg-amber-400 text-white rounded-xl font-semibold hover:bg-gray-700 transition transform hover:scale-[1.01] shadow-md shadow-indigo-300"
-                >
-                  Apply Now
-                </button>
-              </div>
-            ))
-          )}
+          {/* Recommended Jobs */}
+          <div className="flex justify-between items-end mb-8">
+            <h3 className="text-2xl font-black text-slate-800 tracking-tight">Recommended Jobs</h3>
+            <button className="text-amber-600 font-bold text-sm hover:underline flex items-center gap-1">View All <ChevronRight size={16} /></button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {jobs.map((job) => (
+              <JobCard key={job.id} job={job} onApply={() => handleApply(job.id)} />
+            ))}
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
+
+// --- REUSABLE PREMIUM UI COMPONENTS ---
+
+const SidebarIcon = ({ icon, active = false }) => (
+  <div className={`p-4 rounded-2xl cursor-pointer transition-all duration-300 ${active ? 'bg-amber-400 text-slate-900 shadow-lg' : 'text-slate-500 hover:bg-slate-800 hover:text-white'}`}>
+    {icon}
+  </div>
+);
+
+const StatsCard = ({ label, value, icon }) => (
+  <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+    <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-4">{icon}</div>
+    <p className="text-slate-500 text-sm font-medium">{label}</p>
+    <h4 className="text-2xl font-black text-slate-900 mt-1">{value}</h4>
+  </div>
+);
+
+const JobCard = ({ job, onApply }) => (
+  <motion.div 
+    whileHover={{ y: -5 }}
+    className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-2xl transition-all group"
+  >
+    <div className="flex justify-between items-start mb-6">
+      <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100 group-hover:border-amber-200 transition-colors">
+        <Briefcase className="text-slate-400 group-hover:text-amber-500" size={28} />
+      </div>
+      <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Full Time</span>
+    </div>
+    
+    <h4 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-amber-600 transition-colors">{job.title}</h4>
+    <p className="text-slate-500 font-medium text-sm mb-6">{job.company || 'Unknown Tech'} • {job.location || 'Remote'}</p>
+    
+    <div className="flex items-center gap-4 mb-8 text-slate-400">
+      <div className="flex items-center gap-1 text-xs"><MapPin size={14}/> India</div>
+      <div className="flex items-center gap-1 text-xs"><DollarSign size={14}/> 12-18 LPA</div>
+    </div>
+
+    <button 
+      onClick={onApply}
+      className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-amber-400 hover:text-slate-900 transition-all shadow-lg hover:shadow-amber-200/50 flex items-center justify-center gap-2"
+    >
+      Apply Now <ChevronRight size={18} />
+    </button>
+  </motion.div>
+);
 
 export default DashboardJobseeker;
