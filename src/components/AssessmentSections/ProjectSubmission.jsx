@@ -1,115 +1,46 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { Send, Github, Link as LinkIcon } from 'lucide-react';
+import { toast } from 'react-toastify';
 
-export default function ProjectSubmission() {
-  const [formData, setFormData] = useState({
-    topic: '',
-    description: '',
-    github: '',
-    live: '',
-  });
+const ProjectSubmission = () => {
+  const [data, setData] = useState({ github: '', live: '', description: '' });
 
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async () => {
-    try {
-      await fetch('http://localhost:3000/projects', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      alert('Project submitted successfully 🚀');
-      setFormData({ topic: '', description: '', github: '', live: '' });
-    } catch (err) {
-      alert('Submission failed. Try again later.');
-    }
-  };
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // API Call to submit project for Manager Review
+    toast.success("Project submitted! Manager will review and badge you soon.");
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <motion.h2
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="text-3xl font-bold mb-4 text-slate-800"
-      >
-        Project Submission 🎯
-      </motion.h2>
-
-      <motion.p
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        transition={{ delay: 0.2 }}
-        className="text-base text-slate-600 mb-8"
-      >
-        Drop your project details below — GitHub repo, live link, and a short pitch. Let’s gooo 💻🔥
-      </motion.p>
-
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="bg-white p-6 rounded-xl shadow-md border border-amber-200 space-y-5"
-      >
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Project Topic</label>
-          <input
-            type="text"
-            value={formData.topic}
-            onChange={(e) => handleChange('topic', e.target.value)}
-            placeholder="e.g., Real-time Chat App"
-            className="mt-1 w-full px-4 py-2 border border-amber-300 rounded-md"
+    <div className="max-w-2xl mx-auto p-8 bg-white rounded-[32px] shadow-xl border border-slate-100">
+      <h2 className="text-3xl font-black text-slate-900 mb-2">Final Step: Project Submission</h2>
+      <p className="text-slate-500 mb-8">Submit your best work to get the 'Verified' badge.</p>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label className="text-sm font-bold flex items-center gap-2"><Github size={18}/> GitHub Repository</label>
+          <input 
+            type="url" placeholder="https://github.com/..." required
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none"
+            onChange={(e) => setData({...data, github: e.target.value})}
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-bold flex items-center gap-2"><LinkIcon size={18}/> Live Demo Link</label>
+          <input 
+            type="url" placeholder="https://my-project.vercel.app"
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none"
+            onChange={(e) => setData({...data, live: e.target.value})}
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Project Description</label>
-          <textarea
-            rows="4"
-            value={formData.description}
-            onChange={(e) => handleChange('description', e.target.value)}
-            placeholder="Brief overview of your project..."
-            className="mt-1 w-full px-4 py-2 border border-amber-300 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">GitHub Repo Link</label>
-          <input
-            type="url"
-            value={formData.github}
-            onChange={(e) => handleChange('github', e.target.value)}
-            placeholder="e.g., https://github.com/yourname/project"
-            className="mt-1 w-full px-4 py-2 border border-amber-300 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Live Project Link</label>
-          <input
-            type="url"
-            value={formData.live}
-            onChange={(e) => handleChange('live', e.target.value)}
-            placeholder="e.g., https://yourproject.vercel.app"
-            className="mt-1 w-full px-4 py-2 border border-amber-300 rounded-md"
-          />
-        </div>
-
-        <button
-          onClick={handleSubmit}
-          className="w-full px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
-        >
-          Submit Project 🚀
+        <button type="submit" className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
+          Submit for Review <Send size={20} />
         </button>
-      </motion.div>
+      </form>
     </div>
   );
-}
+};
+
+export default ProjectSubmission;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../auth/auth';
 import { FcGoogle } from "react-icons/fc";
@@ -9,7 +9,19 @@ function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    if (token && user) {
+        const routeMap = {
+            TALENT: `/DashboardJobseeker/${user.id}`,
+            HR: '/DashboardHR',
+            MENTOR: '/MentorDashboard'
+        };
+        navigate(routeMap[user.role] || "/");
+    }
+}, [navigate]);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

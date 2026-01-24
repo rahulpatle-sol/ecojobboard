@@ -1,82 +1,148 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { verifyOTP, resendOTP } from '../auth/auth'; // Path check kar lena
 import { toast } from 'react-toastify';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ShieldCheck } from 'lucide-react';
 
 const VerifyOtp = () => {
-  const [otp, setOtp] = useState('');
-  const [loading, setLoading] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const email = location.state?.email;
+    const [otp, setOtp] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [timer, setTimer] = useState(60); // 60 seconds ka timer
+    const [canResend, setCanResend] = useState(false);
+    
+    const [searchParams] = useSearchParams();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!email) {
-      toast.error("Invalid access. Please signup first.");
-      navigate('/signup');
-    }
-  }, [email, navigate]);
+    // Email nikalne ka logic (Signup se ya Google URL se)
+    const email = location.state?.email || searchParams.get('email');
 
-  const handleVerify = async (e) => {
-    e.preventDefault();
+    // Timer Logic
+    useEffect(() => {
+        let interval;
+        if (timer > 0) {
+            interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+        } else {
+            setCanResend(true);
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [timer]);
+
+    useEffect(() => {
+        if (!email) {
+            toast.error("Session expired. Please login again.");
+            navigate('/login');
+        }
+    }, [email, navigate]);
+
+    // OTP Verify karne ka function
+    const handleVerify = async (e) => {
+        e.preventDefault();
+        if (otp.length < 6) return toast.warning("Please enter 6-digit code");
+
+        setLoading(true);
+        try {
+            const result = await verifyOTP(email, otp);
+
+            if (result.success) {
+                toast.success("Account Verified Successfully!");
+                
+                const user = result.data.user;
+                // Role check karke sahi dashboard par bhejo
+                if (user.role === "TALENT") {
+                    navigate(`/DashboardJobseeker/${user.id}`);
+                } else if (user.role === "HR") {
+                    navigate('/DashboardHR');
+                } else {
+                    navigate('/');
+                }
+            } else {
+                toast.error(result.message || "Invalid OTP");
+            }
+        } catch (err) {
+            toast.error("Something went wrong!");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Resend OTP ka function
+const handleResendClick = async () => {
+    if (!canResend) return; // Jab tak timer khatam na ho, click na ho
+    
     setLoading(true);
-
     try {
-      const response = await fetch('http://localhost:8000/api/v1/users/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp }),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        toast.success("Email verified successfully! Please login.");
-        navigate('/login');
-      } else {
-        toast.error(result.message || "Invalid OTP");
-      }
-    } catch (err) {
-      toast.error("Connection error. Try again.");
+        const res = await resendOTP(email);
+        if (res.success) {
+            toast.success("Naya OTP bhej diya hai, check kar bhai!");
+            
+            // 🔥 Ye zaroori hai: Timer ko wapas 60s par reset karo
+            setTimer(60);
+            setCanResend(false);
+            setOtp(''); // Purana OTP saaf kardo
+        } else {
+            toast.error(res.message);
+        }
+    } catch (error) {
+        toast.error("Resend fail ho gaya!");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
-  return (
-    <div className="h-screen w-screen flex items-center justify-center bg-[#0f172a] text-white">
-      <div className="max-w-md w-full p-8 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl">
-        <h2 className="text-3xl font-bold mb-2">Verify OTP</h2>
-        <p className="text-slate-400 mb-8 text-sm">
-          We've sent a 6-digit code to <span className="text-blue-400 font-bold">{email}</span>
-        </p>
 
-        <form onSubmit={handleVerify} className="space-y-6">
-          <input
-            type="text"
-            maxLength="6"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            placeholder="000000"
-            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-center text-3xl tracking-[1rem] font-black focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-            required
-          />
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-[#0a0f1d] text-white px-4">
+            <div className="max-w-md w-full p-8 bg-slate-900/40 border border-slate-800 rounded-3xl backdrop-blur-md shadow-2xl">
+                <div className="flex justify-center mb-6">
+                    <div className="p-4 bg-amber-500/10 rounded-full">
+                        <ShieldCheck className="text-amber-500" size={40} />
+                    </div>
+                </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold transition shadow-lg shadow-blue-600/20 flex items-center justify-center"
-          >
-            {loading ? <Loader2 className="animate-spin mr-2" /> : "Verify & Continue"}
-          </button>
-        </form>
+                <h2 className="text-3xl font-bold text-center mb-2 text-white">Security Check</h2>
+                <p className="text-slate-400 text-center mb-8 text-sm">
+                    Enter the code sent to <br/>
+                    <span className="text-amber-400 font-semibold">{email}</span>
+                </p>
 
-        <p className="text-center text-slate-500 mt-8 text-sm">
-          Didn't receive the code? <button className="text-blue-400 hover:underline">Resend OTP</button>
-        </p>
-      </div>
-    </div>
-  );
+                <form onSubmit={handleVerify} className="space-y-6">
+                    <input
+                        type="text"
+                        maxLength="6"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                        className="w-full bg-slate-950/50 border border-slate-700 rounded-xl py-4 text-center text-3xl font-bold tracking-[0.5rem] focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all"
+                        placeholder="000000"
+                    />
+
+                    <button
+                        type="submit"
+                        disabled={loading || otp.length < 6}
+                        className="w-full bg-amber-500 hover:bg-amber-400 disabled:bg-slate-800 disabled:text-slate-500 text-slate-950 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                    >
+                        {loading ? <Loader2 className="animate-spin" size={20} /> : "Verify & Continue"}
+                    </button>
+                </form>
+
+                <div className="mt-8 text-center">
+                    <p className="text-slate-500 text-sm">
+                        Didn't receive code? {canResend ? (
+                            <button 
+                                onClick={handleResendClick}
+                                className="text-amber-500 hover:underline font-bold ml-1"
+                            >
+                                Resend Now
+                            </button>
+                        ) : (
+                            <span className="text-slate-400 ml-1">Resend in {timer}s</span>
+                        )}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default VerifyOtp;
