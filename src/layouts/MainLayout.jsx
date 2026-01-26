@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import {FooterSection } from '../components/Footer'
-import {NavBar}         from '../components/NavBar'
+import {FooterSection } from '../view/public/Footer'
+import {NavBar}         from '../view/public/NavBar'
 const MainLayout = ({ children }) => {
   const location = useLocation();
   

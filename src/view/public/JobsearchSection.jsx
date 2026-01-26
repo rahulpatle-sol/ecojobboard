@@ -6,7 +6,7 @@ const JobSearchSection = () => {
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div>
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-6">Smart Job Search</h2>
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-6"> Job Search</h2>
           <p className="text-lg text-gray-700 mb-6">
             <span className="font-semibold text-amber-700">Find roles that match your readiness</span><br />
             Our intelligent search connects validated talent with verified opportunities — instantly.

@@ -3,35 +3,34 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const location = useLocation();
-    
     const token = localStorage.getItem("accessToken");
-    let user = null;
+    const storedUser = localStorage.getItem("user");
 
-    // Try-Catch taaki agar JSON corrupt ho toh app crash na kare
-    try {
-        const storedUser = localStorage.getItem("user");
-        user = storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-        console.error("User parsing error:", error);
-        localStorage.clear(); // Clear corrupt data
-    }
-
-    // 1. Check if authenticated
-    if (!token || !user) {
+    // 1. Agar token ya user missing hai
+    if (!token || !storedUser) {
+        console.log("No Token found, redirecting to login...");
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    // 2. Role-based Authorization check
-    // user.role should be "TALENT", "HR", or "MENTOR"
-    if (allowedRoles && !allowedRoles.includes(user.role)) {
-        const redirectPath = {
-            TALENT: `/DashboardJobseeker/${user.id || user._id}`, // Check if your backend uses _id
-            HR: '/DashboardHR',
-            MENTOR: '/MentorDashboard',
-            ADMIN: '/AdminDashboard'
-        };
+    let user;
+    try {
+        user = JSON.parse(storedUser);
+    } catch (e) {
+        console.error("User data corrupt!");
+        return <Navigate to="/login" replace />;
+    }
 
-        return <Navigate to={redirectPath[user.role] || "/"} replace />;
+    // 2. Role Check (Agar roles pass kiye gaye hain)
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+        console.log(`Role mismatch! User: ${user.role}, Allowed: ${allowedRoles}`);
+        
+        // Sahi dashboard dhundho
+        const dashMap = {
+            TALENT: `/DashboardJobseeker/${user.id || user._id}`,
+            HR: '/DashboardHR',
+            MENTOR: '/MentorDashboard'
+        };
+        return <Navigate to={dashMap[user.role] || "/login"} replace />;
     }
 
     return children;

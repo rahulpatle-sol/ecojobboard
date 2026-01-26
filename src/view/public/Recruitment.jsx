@@ -79,7 +79,7 @@ const LineConnector = () => (
 )
 
 // --- Main Component ---
-export default function App() {
+export default function Recruitment() {
   return (
     <section className="min-h-screen flex items-center justify-center overflow-hidden font-sans relative bg-gradient-to-b from-amber-50 via-green-100 to-yellow-50">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 z-10">

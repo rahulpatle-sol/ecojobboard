@@ -156,7 +156,7 @@ const TestimonialCarousel = ({ title, items }) => {
 };
 
 
-export default function App() {
+export default function Testimonial() {
   return (
     <section className="w-full min-h-screen bg-gray-50 font-sans py-20 px-4">
       <script src="https://cdn.tailwindcss.com"></script>
