@@ -1,36 +1,49 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute';
-import DashboardLayout from '../layouts/DashboardLayout';
-
-// Views
-import Login from '../views/auth/Login';
-import DashboardHR from '../views/hr/DashboardHR';
-import DashboardJobseeker from '../views/jobseeker/DashboardJobseeker';
-import MentorDashboard from '../views/mentor/MentorDashboard';
-
+import HeroPage from '../view/public/HeroPage';
+import Login from '../view/auth/Login';
+import Signup from '../view/auth/Signup';
+import Home from '../view/public/Home'
+import { verifyOTP } from '../api/auth';
+import VerifyOtp from '../view/auth/VerifyOTP'
+// Dashboards
+import DashboardJobseeker from '../view/dashbords/talent/TalentDashbord';
+import DashboardHR from '../view/dashbords/Hr/HrDashbord'
+import MentorDashboard from '../view/dashbords/mentor/MentorDashbord'
+import PublicProfiles from '../view/public/PublicProfiles';
+import UserProfileView from '../view/public/UserProfileView';
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* AUTH ROUTES */}
+      {/* Public Routes */}
+      <Route path="/" element={<Home/>} />
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+ <Route path="/verify-otp" element={<VerifyOtp/>} />
+ <Route path="/discover" element={<PublicProfiles />} />
+<Route path="/profile/:username" element={<UserProfileView />} />
+      {/* Talent / Jobseeker */}
+      <Route path="/DashboardJobseeker/:id" element={
+        <ProtectedRoute allowedRoles={['TALENT']}>
+          <DashboardJobseeker />
+        </ProtectedRoute> 
+      } />
 
-      {/* HR ZONE */}
-      <Route path="/hr" element={<ProtectedRoute allowedRoles={['HR']}><DashboardLayout role="HR" /></ProtectedRoute>}>
-        <Route path="dashboard" element={<DashboardHR />} />
-        <Route path="post-job" element={<div>Post Job Page</div>} />
-      </Route>
+      {/* HR Dashboard */}
+      <Route path="/DashboardHR" element={
+        <ProtectedRoute allowedRoles={['HR']}>
+          <DashboardHR />
+        </ProtectedRoute>
+      } />
 
-      {/* JOBSEEKER ZONE */}
-      <Route path="/jobseeker" element={<ProtectedRoute allowedRoles={['TALENT']}><DashboardLayout role="TALENT" /></ProtectedRoute>}>
-        <Route path="dashboard/:id" element={<DashboardJobseeker />} />
-        <Route path="jobs" element={<div>Job Search Page</div>} />
-      </Route>
+      {/* Mentor Dashboard */}
+      <Route path="/MentorDashboard" element={
+        <ProtectedRoute allowedRoles={['MENTOR']}>
+          <MentorDashboard />
+        </ProtectedRoute>
+      } />
 
-      {/* MENTOR ZONE */}
-      <Route path="/mentor" element={<ProtectedRoute allowedRoles={['MENTOR']}><DashboardLayout role="MENTOR" /></ProtectedRoute>}>
-        <Route path="dashboard" element={<MentorDashboard />} />
-      </Route>
-
+      {/* 404 Redirect */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

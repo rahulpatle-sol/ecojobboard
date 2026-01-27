@@ -11,13 +11,19 @@ const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLoginRedirect = (role) => {
-    // FIX: Uncommenting the navigate call to enable routing
-    navigate(`/Login?role=${role}`);
-    // console.log(`Redirecting to Login as ${role}`);
+    // Role ko backend format mein convert karo (e.g., candidate -> TALENT)
+    const roleMap = {
+      mentor: 'MENTOR',
+      candidate: 'TALENT',
+      recruiter: 'HR'
+    };
+    const targetRole = roleMap[role];
+    
+    // Login page par query bhej rahe ho, login page par is role ko default select kar lena
+    navigate(`/login?role=${targetRole}`);
     setShowDropdown(false);
     setMenuOpen(false);
-  };
-
+};
   // Framer Motion variants for the Mobile Menu
   const mobileMenuVariants = {
     closed: { 
