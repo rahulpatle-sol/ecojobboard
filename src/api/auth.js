@@ -1,5 +1,5 @@
 // .env se base uthayega: http://localhost:8000/api/v1
-const ROOT_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const ROOT_URL = import.meta.env.VITE_API_BASE_URL || 'https://skill2hirebd.onrender.com/api/v1';
 // Auth ke liye users append kar diya: http://localhost:8000/api/v1/users
 const BASE_URL = `${ROOT_URL}/users`;
 
