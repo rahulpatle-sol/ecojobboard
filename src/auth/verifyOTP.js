@@ -22,7 +22,7 @@ const onResend = async () => {
 }
 export async function verifyOTP(email, otp) {
   try {
-    const response = await fetch('http://localhost:8000/api/v1/users/verify-otp', {
+    const response = await fetch(`${VITE_API_BASE_URL}/users/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, otp }),

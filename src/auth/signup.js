@@ -13,7 +13,7 @@ export async function signup(userData) {
       formData.append("profilePic", userData.profilePic); 
     }
 
-    const response = await fetch('http://localhost:8000/api/v1/users/register', {
+    const response = await fetch(`${VITE_API_BASE_URL}/users/register`, {
       method: 'POST',
       body: formData, 
     });

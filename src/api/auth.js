@@ -38,7 +38,7 @@ export const signup = async (userData) => {
 };
 
 export const verifyOTP = async (email, otp) => {
-    if (isRateLimited('otp')) return { success: false, message: "Sabar rakho." };
+    if (isRateLimited('otp')) return { success: false, message: "Please wait 3 seconds before trying again." };
     try {
         const response = await fetch(`${BASE_URL}/verify-otp`, {
             method: 'POST',
@@ -72,7 +72,7 @@ export const resendOTP = async (email) => {
 };
 
 export const login = async (email, password) => {
-    if (isRateLimited('login')) return { success: false, message: "Ruko bhai!" };
+    if (isRateLimited('login')) return { success: false, message: "Please wait 3 seconds before trying again." };
     try {
         const response = await fetch(`${BASE_URL}/login`, {
             method: 'POST',
