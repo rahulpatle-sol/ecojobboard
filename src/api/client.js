@@ -6,17 +6,14 @@ const API_BASE_URL =
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json"
-  },
-  withCredentials: true   // 🔥 THIS IS THE FIX
+  withCredentials: true
 });
 
-// Attach token if exists
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
+      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
